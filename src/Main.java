@@ -26,6 +26,7 @@ public class Main {
             serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
             ourSessionFactory = configuration.buildSessionFactory(serviceRegistry);
         } catch (Throwable ex) {
+            System.out.println(ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
@@ -48,7 +49,10 @@ public class Main {
                     System.out.println("  " + o);
                 }
             }
-        } finally {
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        finally {
             session.close();
         }
     }

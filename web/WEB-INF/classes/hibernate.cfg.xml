@@ -4,11 +4,26 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url"/>
-        <property name="connection.driver_class"/>
-        <property name="connection.username"/>
-        <property name="connection.password"/>
-        <!-- DB schema will be updated if needed -->
-        <!-- <property name="hbm2ddl.auto">update</property> -->
+        <property name="connection.url">jdbc:mysql://localhost:3306/purchase</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!--<property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>-->
+
+        <property name="show_sql">true</property>
+        <property name="current_session_context_class">thread</property>
+
+        <mapping class="entity.Export"/>
+        <mapping class="entity.Import"/>
+        <mapping class="entity.Item"/>
+        <mapping class="entity.Order"/>
+        <mapping class="entity.Plan"/>
+        <mapping class="entity.Provider"/>
+        <mapping class="entity.Request"/>
+        <mapping class="entity.User"/>
+        <mapping class="entity.Provideritem"/>
+
     </session-factory>
 </hibernate-configuration>

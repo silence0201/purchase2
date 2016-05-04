@@ -1,0 +1,98 @@
+package entity;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.sql.Date;
+import java.util.Objects;
+
+/**
+ * Description: Order
+ * Author: silence
+ * Update: silence(2016-05-01 09:30)
+ */
+@Entity
+@Table(name = "orders")
+public class Order {
+    private Integer orderId;
+    private Date orderTime;
+    private String orderStatus;
+    private Plan plan ;
+    private User orderMan ;
+
+    @Id
+    @Column(name = "orderID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    @Basic
+    @Column(name = "orderTime")
+    public Date getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(Date orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    @Basic
+    @Column(name = "orderStatus")
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "orderManID")
+    public User getOrderMan() {
+        return orderMan;
+    }
+
+    public void setOrderMan(User orderMan) {
+        this.orderMan = orderMan;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "planID")
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return Objects.equals(getOrderId(), order.getOrderId()) &&
+                Objects.equals(getOrderTime(), order.getOrderTime()) &&
+                Objects.equals(getOrderStatus(), order.getOrderStatus()) &&
+                Objects.equals(getPlan(), order.getPlan()) &&
+                Objects.equals(getOrderMan(), order.getOrderMan());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getOrderId(), getOrderTime(), getOrderStatus(), getPlan(), getOrderMan());
+    }
+}
