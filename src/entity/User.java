@@ -15,12 +15,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "user")
 public class User {
-    private String userId;
-    private String passWord;
-    private String userName;
-    private String position;
-    private String tele;
-    private String email;
+    private String userId;  //用户编号
+    private String passWord;  //用户密码
+    private String userName;  //用户姓名
+    private String position;  //用户职位
+    private String tele;  //用户电话
+    private String email;  //用户邮箱
 
     @Id
     @Column(name = "userID")
@@ -98,5 +98,17 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(userId, passWord, userName, position, tele, email);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", userId='" + userId + '\'' +
+                ", passWord='" + passWord + '\'' +
+                ", userName='" + userName + '\'' +
+                ", position='" + position + '\'' +
+                ", tele='" + tele + '\'' +
+                '}';
     }
 }

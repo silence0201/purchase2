@@ -15,12 +15,12 @@ import java.util.Objects;
 @Entity
 @Table(name = "provider")
 public class Provider {
-    private Integer providerId;
-    private String providerName;
-    private String contant;
-    private String tele;
-    private String provinces;
-    private String address;
+    private Integer providerId;   //供应商编号
+    private String providerName;   //供应商名称
+    private String contant;  //供应商联系人
+    private String tele;  //供应商联系电话
+    private String provinces;  //供应商所属的省份
+    private String address;  //供应商所属的地址
 
     @Id
     @Column(name = "providerID")
@@ -98,5 +98,17 @@ public class Provider {
     @Override
     public int hashCode() {
         return Objects.hash(providerId, providerName, contant, tele, provinces, address);
+    }
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "address='" + address + '\'' +
+                ", providerId=" + providerId +
+                ", providerName='" + providerName + '\'' +
+                ", contant='" + contant + '\'' +
+                ", tele='" + tele + '\'' +
+                ", provinces='" + provinces + '\'' +
+                '}';
     }
 }

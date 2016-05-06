@@ -22,10 +22,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "export")
 public class Export {
-    private Integer exportId;
-    private Date exportTime;
-    private User stockMan ;
-    private Request request ;
+    private Integer exportId;  //出库编号
+    private Date exportTime;   //出库时间
+    private User stockMan ;  //处理人
+    private Request request ;  //对应申请单
 
     @Id
     @Column(name = "exportID")
@@ -82,5 +82,15 @@ public class Export {
     @Override
     public int hashCode() {
         return Objects.hash(getExportId(), getExportTime(), getStockMan(), getRequest());
+    }
+
+    @Override
+    public String toString() {
+        return "Export{" +
+                "exportId=" + exportId +
+                ", exportTime=" + exportTime +
+                ", stockMan=" + stockMan +
+                ", request=" + request +
+                '}';
     }
 }

@@ -23,13 +23,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "plan")
 public class Plan {
-    private Integer planId;
-    private int number;
-    private double totalCost;
-    private String planStauts;
-    private Date planTime;
-    private Item item ;
-    private List<Request> requests ;
+    private Integer planId;   //计划编号
+    private int number;   //商品数量
+    private double totalCost;   //商品金额
+    private String planStauts;   //计划单状态
+    private Date planTime;   //计划生成时间
+    private Item item ;  //计划单商品
+    private List<Request> requests ; //计划单对应的申请单
 
 
     @Id
@@ -119,5 +119,18 @@ public class Plan {
     @Override
     public int hashCode() {
         return Objects.hash(getPlanId(), getNumber(), getTotalCost(), getPlanStauts(), getPlanTime(), getItem(), getRequests());
+    }
+
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "item=" + item +
+                ", planId=" + planId +
+                ", number=" + number +
+                ", totalCost=" + totalCost +
+                ", planStauts='" + planStauts + '\'' +
+                ", planTime=" + planTime +
+                ", requests=" + requests +
+                '}';
     }
 }

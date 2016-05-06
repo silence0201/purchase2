@@ -20,10 +20,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "import")
 public class Import {
-    private Integer importId;
-    private Date importTime;
-    private User stockMan ;
-    private Order order ;
+    private Integer importId;   //入库单
+    private Date importTime;  //入库时间
+    private User stockMan ;   //库管员
+    private Order order ;  //对应订单
 
     @Id
     @Column(name = "importID")
@@ -79,5 +79,15 @@ public class Import {
     @Override
     public int hashCode() {
         return Objects.hash(getImportId(), getImportTime(), getStockMan(), getOrder());
+    }
+
+    @Override
+    public String toString() {
+        return "Import{" +
+                "importId=" + importId +
+                ", importTime=" + importTime +
+                ", stockMan=" + stockMan +
+                ", order=" + order +
+                '}';
     }
 }

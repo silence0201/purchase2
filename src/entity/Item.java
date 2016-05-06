@@ -15,10 +15,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "item")
 public class Item {
-    private Integer itemId;
-    private String itemName;
-    private double avePrice;
-    private int inventory;
+    private Integer itemId;   //商品编号
+    private String itemName;  //商品名称
+    private double avePrice;  //商品价格
+    private int inventory;  //商品库存
 
     @Id
     @Column(name = "itemID")
@@ -74,5 +74,15 @@ public class Item {
     @Override
     public int hashCode() {
         return Objects.hash(itemId, itemName, avePrice, inventory);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "avePrice=" + avePrice +
+                ", itemId=" + itemId +
+                ", itemName='" + itemName + '\'' +
+                ", inventory=" + inventory +
+                '}';
     }
 }

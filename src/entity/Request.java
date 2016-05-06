@@ -22,20 +22,20 @@ import java.util.Objects;
 @Entity
 @Table(name = "request")
 public class Request {
-    private Integer requestId;
-    private double number;
-    private double totalCost;
-    private Item item ;
-    private Date requestTime;
-    private String requestStatus;
-    private Date auditTime;
-    private String reason;
-    private User requestMan ;
-    private User auditor ;
+    private Integer requestId;   //申请单的编号
+    private double number;  //申请商品的数量
+    private double totalCost;   //申请商品的金额
+    private Item item ;  //申请的物品
+    private Date requestTime;  //申请的时间
+    private String requestStatus;  //申请的状态
+    private Date auditTime;  //审核的时间
+    private String reason;  //理由
+    private User requestMan ;   // 申请人
+    private User auditor ;  //审核人
 
     @Id
     @Column(name = "requestID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getRequestId() {
         return requestId;
     }
@@ -154,5 +154,21 @@ public class Request {
     @Override
     public int hashCode() {
         return Objects.hash(getRequestId(), getNumber(), getTotalCost(), getItem(), getRequestTime(), getRequestStatus(), getAuditTime(), getReason(), getRequestMan(), getAuditor());
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "auditor=" + auditor +
+                ", requestId=" + requestId +
+                ", number=" + number +
+                ", totalCost=" + totalCost +
+                ", item=" + item +
+                ", requestTime=" + requestTime +
+                ", requestStatus='" + requestStatus + '\'' +
+                ", auditTime=" + auditTime +
+                ", reason='" + reason + '\'' +
+                ", requestMan=" + requestMan +
+                '}';
     }
 }

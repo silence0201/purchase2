@@ -22,11 +22,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "orders")
 public class Order {
-    private Integer orderId;
-    private Date orderTime;
-    private String orderStatus;
-    private Plan plan ;
-    private User orderMan ;
+    private Integer orderId;   //订单编号
+    private Date orderTime;   //订单生成时间
+    private String orderStatus;  //订单状态
+    private Plan plan ;   //订单对应计划单
+    private User orderMan ;  //采购人
 
     @Id
     @Column(name = "orderID")
@@ -94,5 +94,16 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(getOrderId(), getOrderTime(), getOrderStatus(), getPlan(), getOrderMan());
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", orderTime=" + orderTime +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", plan=" + plan +
+                ", orderMan=" + orderMan +
+                '}';
     }
 }

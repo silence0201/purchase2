@@ -19,11 +19,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "provideritem")
 public class Provideritem {
-    private Integer providerItemId;
-    private String quality;
-    private double price;
-    private Provider provider ;
-    private Item item ;
+    private Integer providerItemId;   //供应商提供商品编号
+    private String quality;   //商品的质量
+    private double price;  //商品的价格
+    private Provider provider ;   //商品的供应商
+    private Item item ;   //供应的价格
 
     @Id
     @Column(name = "providerItemID")
@@ -90,5 +90,16 @@ public class Provideritem {
     @Override
     public int hashCode() {
         return Objects.hash(getProviderItemId(), getQuality(), getPrice(), getProvider(), getItem());
+    }
+
+    @Override
+    public String toString() {
+        return "Provideritem{" +
+                "item=" + item +
+                ", providerItemId=" + providerItemId +
+                ", quality='" + quality + '\'' +
+                ", price=" + price +
+                ", provider=" + provider +
+                '}';
     }
 }
