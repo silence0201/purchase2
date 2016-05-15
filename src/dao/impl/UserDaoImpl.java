@@ -17,15 +17,11 @@ public class UserDaoImpl implements UserDao {
     public User getByID(String userID) {
         //创建Session
         Session session = HibernateUtil.getSession() ;
-
         //启动事务
         Transaction tc = session.beginTransaction() ;
-
         User user = (User)session.get(User.class,userID) ;
-
         //提交事务
         tc.commit();
-
         //关闭session
         session.close() ;
 

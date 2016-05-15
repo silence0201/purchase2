@@ -1,5 +1,7 @@
 package service;
 
+import entity.User;
+
 /**
  * Description: ICheckService
  * Author: silence
@@ -8,5 +10,5 @@ package service;
 public interface ICheckService {
 
     //登陆验证service
-    public abstract boolean loginCheck(String userID,String password) ;
+    public abstract User loginCheck(String userID, String password) ;
 }

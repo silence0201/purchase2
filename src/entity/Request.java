@@ -23,7 +23,7 @@ import java.util.Objects;
 @Table(name = "request")
 public class Request {
     private Integer requestId;   //申请单的编号
-    private double number;  //申请商品的数量
+    private int number;  //申请商品的数量
     private double totalCost;   //申请商品的金额
     private Item item ;  //申请的物品
     private Date requestTime;  //申请的时间
@@ -46,11 +46,11 @@ public class Request {
 
     @Basic
     @Column(name = "number")
-    public double getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(double number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -104,7 +104,7 @@ public class Request {
         this.reason = reason;
     }
 
-    @ManyToOne(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "itemID")
     public Item getItem() {
         return item;

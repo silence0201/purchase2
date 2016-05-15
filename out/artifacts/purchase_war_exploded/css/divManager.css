@@ -19,6 +19,12 @@
 section #main{
     width: 84%
 }
+.noticeCon{
+    font-size: 1.2em ;
+    height: 2em ;
+    margin: 5px;
+    padding: 5px;
+}
 
 #main_div{
     margin: 5px;
@@ -36,7 +42,7 @@ section #main{
     margin: 5px;
     float: left;
     width: 28%;
-    height: 340px;
+    height: 300px;
     /*background-color: black;*/
     border: 1px solid #9BA0AF;
     -webkit-border-radius: 5px;
@@ -49,7 +55,7 @@ section #main{
     margin: 5px;
     float: left;
     width: 28%;
-    height: 350px;
+    height: 390px;
     border: 1px solid #9BA0AF;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;

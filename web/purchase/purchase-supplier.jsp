@@ -1,3 +1,4 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: silence
@@ -5,6 +6,7 @@
   Time: 下午8:37
   供应商列表页面
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -19,8 +21,8 @@
     <%--secondhead--%>
     <section id="second_bar">
         <div class="user">
-            <p>王XX（
-                <a href="">3个未处理</a>
+            <p>${ sessionScope.user.userName }（
+                <a href="">${ sessionScope.count }个未处理</a>
                 ）
             </p>
         </div>
@@ -41,6 +43,30 @@
             <header class="buyInfo">
                 <h3>供应商列表</h3>
             </header>
+            <table class="table table-striped table-hover table-bordered">
+                <tr>
+                    <td>编号</td>
+                    <td>供应商名称</td>
+                    <td>联系人</td>
+                    <td>联系电话</td>
+                    <td>详细地址</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <c:forEach items="${ requestScope.suppliers }" var="provider" varStatus="status">
+                    <c:if test="${ status.index < 15}">
+                        <tr>
+                            <td>${ provider.getProviderId() }</td>
+                            <td>${ provider.getProviderName() }</td>
+                            <td>${ provider.getContant()}</td>
+                            <td>${ provider.getTele() }</td>
+                            <td>${ provider.getProvinces().concat(provider.getAddress()) }</td>
+                            <td><a href="">详情</a>&nbsp;<a href="">修改</a>
+                                &nbsp;<a href="">删除</a></td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </table>
         </div>
         <div id="side_div1">
             <header id="time">
@@ -53,6 +79,19 @@
             <header id="count">
                 <h3>供应商统计</h3>
             </header>
+            <table class="table table-striped table-hover table-bordered">
+                <tr>
+                    <td>省份</td>
+                    <td>数量</td>
+                </tr>
+
+                <c:forEach items="${ requestScope.classal }" var="provider">
+                    <tr>
+                        <td>${provider.key}</td>
+                        <td>${ provider.value}</td>
+                    </tr>
+                </c:forEach>
+            </table>
         </div>
     </section>
 </body>

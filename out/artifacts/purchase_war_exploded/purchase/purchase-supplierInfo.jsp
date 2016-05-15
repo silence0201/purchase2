@@ -19,7 +19,7 @@
     <%--secondhead--%>
     <section id="second_bar">
         <div class="user">
-            <p>王XX（
+            <p>${ sessionScope.user.userName }（
                 <a href="">3个未处理</a>
                 ）
             </p>

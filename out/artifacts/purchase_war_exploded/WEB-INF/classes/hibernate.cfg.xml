@@ -4,11 +4,15 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:mysql://localhost:3306/purchase</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/purchase?characterEncoding=utf8</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+        <property name="hbm2ddl.auto">update</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!--<property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>-->
 
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         <property name="current_session_context_class">thread</property>
 
         <mapping class="entity.Export"/>
@@ -20,6 +24,6 @@
         <mapping class="entity.Request"/>
         <mapping class="entity.User"/>
         <mapping class="entity.Provideritem"/>
-        <!-- <property name="hbm2ddl.auto">update</property> -->
+
     </session-factory>
 </hibernate-configuration>

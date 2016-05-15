@@ -12,10 +12,11 @@
         <hr>
     </div>
     <div class="function">
-        <div id="notify"><a href="purchase-notice.jsp">待办事项</a></div>
-        <div id="query"><a href="purchase-list.jsp">订单查看</a></div>
-        <div id="support"><a href="purchase-supplier.jsp">供应商管理</a></div>
-        <div id="exit" ><a href="">退出登录</a></div>
+        <div id="notify"><a href="purchaseNotice.action">待办事项</a></div>
+        <div id="query"><a href="purchaseList.action">订单查看</a></div>
+        <div id="work"><a href="purchaseCheck.action">审核查看</a></div>
+        <div id="support"><a href="purchaseSupplier.action">供应商管理</a></div>
+        <div id="exit" ><a href="purchaseLogout.action">退出登录</a></div>
     </div>
     <%@ include file="foot.jsp" %>
 </aside>

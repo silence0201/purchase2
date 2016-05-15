@@ -29,10 +29,8 @@ public class DivManagerFilter implements Filter {
         String status = (String) session.getAttribute("status") ;  //获取状态
         String position = (String) session.getAttribute("position") ;  //获取职位
 
-        if (status != null && position !=null){
-            if (status.equals("Login") && position.endsWith("部门经理")){
-                chain.doFilter(req,resp);
-            }
+        if (status != null && position !=null&status.equals("Login") && position.endsWith("部门经理")){
+            chain.doFilter(req,resp);
         }else{
             String path = request.getContextPath() ;
             HttpServletResponse response = (HttpServletResponse)resp ;

@@ -1,7 +1,16 @@
 package action;
 
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Export;
+import entity.Import;
+import entity.Item;
+import entity.User;
 import service.IStockService;
+import service.impl.IStockServiceImpl;
+
+import java.util.ArrayList;
 
 /**
  * Description: StockAction
@@ -56,6 +65,49 @@ public class StockAction extends ActionSupport {
 
     //确定出库单
     public String addImport(){
+        return SUCCESS ;
+    }
+
+    //跳转到库存状态页面
+    public String status(){
+        service = new IStockServiceImpl() ;
+
+        User user = (User) ActionContext.getContext().getSession().get("user") ;
+        String userID = user.getUserId() ;
+
+        ArrayList<Item> items = service.getItemsInfo() ;
+        int countOfExport  = service.getCountOfExport(userID) ;
+        int countOfImport = service.getcountOfImport(userID) ;
+        ActionContext.getContext().put("items",items);
+        ActionContext.getContext().put("countOfExport",countOfExport);
+        ActionContext.getContext().put("countOfImport",countOfImport);
+
+        return SUCCESS ;
+    }
+
+    //跳转到入库列表页面
+    public String impart(){
+        service = new IStockServiceImpl() ;
+
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+        String userID = user.getUserId() ;
+
+        ArrayList<Import> imports = service.getImportList(userID) ;
+        ActionContext.getContext().put("imports",imports);
+
+        return SUCCESS ;
+    }
+
+    //跳转到出库列表页面
+    public String export(){
+        service = new IStockServiceImpl() ;
+
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+        String userID = user.getUserId() ;
+
+        ArrayList<Export> exports = service.getExportList(userID) ;
+        ActionContext.getContext().put("exports",exports);
+
         return SUCCESS ;
     }
 

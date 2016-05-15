@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: silence
@@ -19,8 +20,8 @@
     <%--secondhead--%>
     <section id="second_bar">
         <div class="user">
-            <p>王XX（
-                <a href="">3个未处理</a>
+            <p>${ sessionScope.user.userName }（
+                <a href="">${ sessionScope.count }个未处理</a>
                 ）
             </p>
         </div>
@@ -41,6 +42,35 @@
             <header class="buyInfo">
                 <h3>订单信息</h3>
             </header>
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <td>订单编号</td>
+                        <td>计划单编号</td>
+                        <td>商品</td>
+                        <td>数量</td>
+                        <td>花费</td>
+                        <td>采购时间</td>
+                        <td>采购状态</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <c:forEach items="${ requestScope.orderList }" var="arder" varStatus="status">
+                        <c:if test="${ status.index < 15}">
+                            <tr>
+                                <td>${ arder.getOrderId() }</td>
+                                <td>${ arder.getPlan().getPlanId() }</td>
+                                <td>${ arder.getPlan().getItem().getItemName()}</td>
+                                <td>${ arder.getPlan().getItem().getAvePrice()}</td>
+                                <td>${ arder.getPlan().getTotalCost() }</td>
+                                <td>${ arder.getOrderTime()}</td>
+                                <td>${ arder.getOrderStatus() }</td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </tbody>
+            </table>
         </div>
         <div id="side_div1">
             <header id="time">
@@ -53,6 +83,22 @@
             <header id="count">
                 <h3>采购统计</h3>
             </header>
+            <br />
+            <p style="font-size: 1.8em;text-align: center;">订单统计</p>
+            <hr />
+            <br />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <label style="font-size: 1.3em">总采购次数:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="text" readonly="readonly" value="${ requestScope.count}">
+            <br /><br />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <label style="font-size: 1.3em">月累计采购次数:&nbsp;&nbsp;</label>
+            <input type="text" readonly="readonly" value="${ requestScope.countOfTime}" />
+            <br /><br />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <label style="font-size: 1.3em">月累计采购金额:&nbsp;&nbsp;</label>
+            <input type="text" readonly="readonly" value="${ requestScope.sumOfMoney }">
+            <br />
         </div>
     </section>
 </body>

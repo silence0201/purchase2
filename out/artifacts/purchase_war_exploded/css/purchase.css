@@ -90,6 +90,13 @@ embed{
     padding-left: 10px;
 }
 
+.noticeCon {
+    font-size: 1.2em;
+    height: 2em;
+    margin: 5px;
+    padding: 5px;
+}
+
 #notify a{
     padding: 0 0 0 25px;
     background: url(../images/purchase/notice.png) no-repeat center left;
@@ -103,4 +110,8 @@ embed{
 #support a{
     padding: 0 0 0 25px;
     background: url(../images/purchase/supp.png) no-repeat center left;
+}
+#work a{
+    padding: 0 0 0 25px;
+    background: url(../images/purchase/work.png) no-repeat center left;
 }

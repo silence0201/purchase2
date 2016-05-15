@@ -30,4 +30,13 @@ public class ItemDaoImpl implements ItemDao {
 
         return result;
     }
+
+    @Override
+    public Item item(Integer itemID) {
+        Session session  = HibernateUtil.getSession() ;
+
+        Item item = (Item) session.get(Item.class,itemID);
+
+        return item;
+    }
 }

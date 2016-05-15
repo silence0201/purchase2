@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.PlanDao;
 import entity.Plan;
+import entity.Request;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,6 +22,10 @@ public class PlanDaoImpl implements PlanDao {
         try {
             session.beginTransaction() ;
             session.save(plan) ;
+            for (Request request : plan.getRequests()){
+                request.setRequestStatus("计划");
+                session.update(request);
+            }
             session.getTransaction().commit();
             return true ;
         }catch (Exception e){
@@ -46,5 +51,33 @@ public class PlanDaoImpl implements PlanDao {
         session.close() ;
 
         return plans ;
+    }
+
+    @Override
+    public ArrayList<String> needOrderPlan() {
+        Session session = HibernateUtil.getSession() ;
+
+        Transaction tx = session.beginTransaction() ;
+
+        String hql = "select plan.planId from Plan plan where plan.planStauts=:status" ;
+        Query query = session.createQuery(hql) ;
+        query.setParameter("status","需受理") ;
+
+        ArrayList<String> planIDs = (ArrayList<String>) query.list();
+
+        tx.commit();
+        session.clear();
+
+        return planIDs;
+    }
+
+    @Override
+    public Plan planInfo(Integer planID) {
+
+        Session session = HibernateUtil.getSession() ;
+
+        Plan plan = (Plan) session.get(Plan.class,planID);
+
+        return plan;
     }
 }

@@ -12,10 +12,10 @@
         <hr>
     </div>
     <div class="function">
-        <div id="notify"><a href="divManager-notice.jsp">待办事项</a></div>
-        <div id="query"><a href="divManager-query.jsp">需求查看</a></div>
-        <div id="work"><a href="divManager-work.jsp">业务查看</a></div>
-        <div id="exit"><a href="#">退出登录</a></div>
+        <div id="notify"><a href="divManagerNotice.action">待办事项</a></div>
+        <div id="query"><a href="divManagerList.action">需求查看</a></div>
+        <div id="work"><a href="divManagerWork.action">业务查看</a></div>
+        <div id="exit"><a href="divManagerLogout.action">退出登录</a></div>
     </div>
     <%@ include file="foot.jsp" %>
 </aside>

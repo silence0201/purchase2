@@ -19,7 +19,7 @@
     <%--secondhead--%>
     <section id="second_bar">
         <div class="user">
-            <p>王XX（
+            <p>${ sessionScope.user.userName }（
                 <a href="">3个未处理</a>
                 ）
             </p>
@@ -51,7 +51,7 @@
         <%--额外功能--%>
         <div id="side_div2">
             <header id="count">
-                <h3>最近采购记录</h3>
+                <h3>审核统计</h3>
             </header>
         </div>
     </section>

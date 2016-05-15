@@ -1,9 +1,20 @@
 package action;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import entity.Item;
+import entity.Order;
 import entity.Provider;
+import entity.Request;
+import entity.User;
 import service.IPurchaseService;
+import service.impl.IPurchaseServiceImpl;
+import util.DateUtil;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description: PurchaseAction
@@ -129,5 +140,103 @@ public class PurchaseAction  extends ActionSupport {
         return SUCCESS ;
     }
 
+    //跳转到通知页面
+    public String notice(){
+        service = new IPurchaseServiceImpl() ;
+        User user = (User) ActionContext.getContext().getSession().get("user") ;
+
+        ArrayList<String> checkNotice = service.getCheckNotices() ;
+        int count = checkNotice.size() ;
+        boolean flag =  service.creatrPlan() ;
+//        System.out.println(flag);
+        ArrayList<String> needPlans = service.getPurchaseNotices() ;
+        ArrayList<Request> checkList = service.getCheckList(user.getUserId()) ;
+        ArrayList<Order> orderList = service.getOrderList(user.getUserId()) ;
+
+        ActionContext.getContext().put("checkNotice",checkNotice) ;
+        ActionContext.getContext().getSession().put("count",count) ;
+        ActionContext.getContext().put("needPlans",needPlans);
+        ActionContext.getContext().put("checkList",checkList);
+        ActionContext.getContext().put("orderList",orderList);
+
+        return SUCCESS ;
+    }
+
+    //跳转到供应商管理页面
+    public String supplier(){
+        service = new IPurchaseServiceImpl() ;
+
+        ArrayList<Provider> suppliers = service.getProviders() ;
+
+
+        Map<String,Integer> classal = new HashMap<>() ;
+        for (Provider pro : suppliers){
+            Integer count = classal.get(pro.getProvinces()) ;
+            if (count == null){
+                count = new Integer(0) ;
+                count++ ;
+                classal.put(pro.getProvinces(),count) ;
+            }else {
+                count++ ;
+                classal.put(pro.getProvinces(),count) ;
+            }
+        }
+
+        ActionContext.getContext().put("suppliers",suppliers);
+        ActionContext.getContext().put("classal",classal);
+
+        return SUCCESS ;
+    }
+
+    //跳转到采购列表页面
+    public String list(){
+        service = new IPurchaseServiceImpl() ;
+
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+        ArrayList<Order> orderList = service.getOrderList(user.getUserId()) ;
+        int countOfTime = 0 ;
+        int count = 0 ;
+        double sumOfMoney = 0 ;
+        Date start = DateUtil.getStartOfMonth() ;
+        for (Order order : orderList){
+            if (order.getOrderTime().after(start)){
+                countOfTime++ ;
+                sumOfMoney += order.getPlan().getTotalCost() ;
+            }
+            count++ ;
+        }
+
+        ActionContext.getContext().put("orderList",orderList);
+        ActionContext.getContext().put("sumOfMoney",sumOfMoney);
+        ActionContext.getContext().put("countOfTime",countOfTime);
+        ActionContext.getContext().put("count",count);
+
+        return SUCCESS ;
+    }
+
+    //跳转到审查查看页面
+    public String check(){
+        service = new IPurchaseServiceImpl() ;
+        User user = (User) ActionContext.getContext().getSession().get("user") ;
+        ArrayList<Request> checkList = service.getCheckList(user.getUserId()) ;
+        int countOfTime = 0 ;
+        double sumOfMoney = 0 ;
+        int count = 0 ;
+        Date start = DateUtil.getStartOfMonth() ;
+        for (Request check : checkList ){
+            if (check.getAuditTime().after(start)){
+                countOfTime++ ;
+                sumOfMoney += check.getTotalCost() ;
+            }
+            count ++ ;
+        }
+
+        ActionContext.getContext().put("checkList",checkList);
+        ActionContext.getContext().put("count",count);
+        ActionContext.getContext().put("countOfTime",countOfTime);
+        ActionContext.getContext().put("sumOfMoney",sumOfMoney);
+
+        return SUCCESS ;
+    }
 
 }

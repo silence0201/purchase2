@@ -22,8 +22,10 @@ public class RequestTest {
 //        info();
 //        requests();
 //        add();
-//        check();
-        time();
+        check();
+//        time();
+//        money();
+
     }
 
 
@@ -61,7 +63,7 @@ public class RequestTest {
     public static void requests(){
         RequestDao requestDao = new RequestDaoImpl() ;
 
-        ArrayList<Request> requests = requestDao.requestList("R00011") ;
+        ArrayList<Request> requests = requestDao.requestList("R00011","采购部门经理") ;
 
         Iterator<Request> iterator = requests.iterator() ;
 
@@ -100,6 +102,8 @@ public class RequestTest {
         System.out.println("采购员需要审核:"+result2);
         System.out.println("财务部门经理需要审核:"+result3);
 
+        System.out.println(requestDao.checkRequestList("M00001"));
+
     }
 
     public static void time(){
@@ -107,5 +111,11 @@ public class RequestTest {
 
         System.out.println(requestDao.countOfTime("R00011"));
         System.out.println(requestDao.countOfTime("D00001"));
+    }
+
+    public static void money(){
+        RequestDao requestDao = new RequestDaoImpl() ;
+
+        System.out.printf(String.valueOf(requestDao.countOfMoney("R00011")));
     }
 }

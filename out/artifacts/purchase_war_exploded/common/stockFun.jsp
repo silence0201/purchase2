@@ -12,10 +12,10 @@
         <hr>
     </div>
     <div class="function">
-        <div id="status"><a href="stockman-status.jsp">库存状态</a></div>
-        <div id="import"><a href="stockman-import.jsp">入库登记</a></div>
-        <div id="export"><a href="stockman-export.jsp">出库登记</a></div>
-        <div id="exit"><a href="#">退出登录</a></div>
+        <div id="status"><a href="stockStatus.action">库存状态</a></div>
+        <div id="import"><a href="stockImport.action">入库登记</a></div>
+        <div id="export"><a href="stockExport.action">出库登记</a></div>
+        <div id="exit"><a href="stockmanLogout.action">退出登录</a></div>
     </div>
     <%@ include file="foot.jsp" %>
 </aside>

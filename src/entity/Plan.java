@@ -5,6 +5,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -34,6 +36,7 @@ public class Plan {
 
     @Id
     @Column(name = "planID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getPlanId() {
         return planId;
     }
@@ -82,7 +85,7 @@ public class Plan {
         this.planTime = planTime;
     }
 
-    @ManyToOne(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "itemID")
     public Item getItem() {
         return item;
@@ -92,7 +95,7 @@ public class Plan {
         this.item = item;
     }
 
-    @OneToMany(fetch = FetchType.EAGER,targetEntity = Request.class)
+    @OneToMany(fetch = FetchType.EAGER,targetEntity = Request.class,cascade = {CascadeType.ALL})
     @JoinColumns(value = {@JoinColumn(name = "planID",referencedColumnName = "planID")})
     public List<Request> getRequests() {
         return requests;

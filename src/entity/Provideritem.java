@@ -4,6 +4,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,6 +29,7 @@ public class Provideritem {
 
     @Id
     @Column(name = "providerItemID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getProviderItemId() {
         return providerItemId;
     }

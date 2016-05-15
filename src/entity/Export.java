@@ -29,7 +29,7 @@ public class Export {
 
     @Id
     @Column(name = "exportID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getExportId() {
         return exportId;
     }

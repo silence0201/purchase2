@@ -1,8 +1,16 @@
 package action;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Item;
 import entity.Request;
+import entity.User;
 import service.IRequestService;
+import service.impl.IRequestServiceImpl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description: RequestAction
@@ -57,6 +65,62 @@ public class RequestAction extends ActionSupport {
 
     //修改申请单
     public String modify(){
+        return SUCCESS ;
+    }
+
+    //初始化通知页面
+    public String notice(){
+        service = new IRequestServiceImpl() ;
+        Map session = ActionContext.getContext().getSession() ;
+        User user = (User) session.get("user");
+        String requestID = user.getUserId() ;
+
+        //获取取货通知信息
+        HashMap<String,ArrayList<String>> map = service.getRequestNotices(requestID) ;
+        ArrayList<Request> requests = service.getRequestList(requestID) ;
+
+        ActionContext.getContext().put("notices",map.get("notices"));
+        ActionContext.getContext().put("passes",map.get("passes"));
+        ActionContext.getContext().put("refuses",map.get("refuses"));
+        ActionContext.getContext().put("requests",requests);
+        int count = map.get("notices").size() + map.get("passes").size()+
+                map.get("refuses").size() ;
+        ActionContext.getContext().getSession().put("count",count) ;
+
+        return SUCCESS ;
+    }
+
+    //初始化列表页面
+    public String list(){
+        service = new IRequestServiceImpl() ;
+
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+
+        String requestManID = user.getUserId() ;
+
+        ArrayList<Request> requests = service.getRequestList(requestManID) ;
+
+        ActionContext.getContext().put("requests",requests);
+
+        return SUCCESS ;
+    }
+
+    //初始化申请页面
+    public String request(){
+        service = new IRequestServiceImpl() ;
+
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+
+        String requestManID = user.getUserId() ;
+
+        int countOfTime = service.countOfTime(requestManID) ;
+        double countOfMoney = service.countOfMoney(requestManID) ;
+        ArrayList<Item> items = service.items() ;
+
+        ActionContext.getContext().put("countOfTime",countOfTime);
+        ActionContext.getContext().put("countOfMoney",countOfMoney);
+        ActionContext.getContext().put("items",items);
+
         return SUCCESS ;
     }
 }

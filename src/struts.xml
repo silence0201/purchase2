@@ -5,4 +5,178 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+
+
+    <!--用户验证-->
+    <package name="login" extends="struts-default">
+        <action name="login" class="action.CheckAction" method="login">
+            <result type="chain">jump</result>
+            <result name="fail">/login.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+
+        <action name="*Logout" class="action.CheckAction" method="logout">
+            <result type="redirect">/login.jsp</result>
+            <result name="input">/{1}/{1}-notice.jsp</result>
+        </action>
+
+        <action name="jump" class="action.CheckAction" method="jump" >
+            <result name="request" type="redirect">requestNotice.action</result>
+            <result name="stock" type="redirect">stockStatus.action</result>
+            <result name="purchase" type="redirect">purchaseNotice.action</result>
+            <result name="divManager" type="redirect">divManagerNotice.action</result>
+            <result name="manager" type="redirect">managerNotice.action</result>
+            <result name="fail">/login.jsp</result>
+        </action>
+    </package>
+
+    <!--申请员action-->
+    <package name="request" extends="struts-default">
+        <interceptors>
+            <interceptor name="requestLogin" class="interceptor.LoginInterceptor">
+                <param name="status">Login</param>
+                <param name="position">申请员</param>
+            </interceptor>
+        </interceptors>
+        <global-results>
+            <result name="noPermission" type="redirect">/login.jsp</result>
+        </global-results>
+
+        <!--页面指向-->
+        <action name="requestNotice" class="action.RequestAction" method="notice">
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/request/request-notice.jsp</result>
+        </action>
+        <action name="requestList" class="action.RequestAction" method="list">
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/request/request-list.jsp</result>
+        </action>
+        <action name="requestRequest" class="action.RequestAction" method="request" >
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/request/request-request.jsp</result>
+        </action>
+    </package>
+
+    <!--采购员action-->
+    <package name="purchase" extends="struts-default" >
+        <interceptors>
+            <interceptor name="purchaseLogin" class="interceptor.LoginInterceptor">
+                <param name="status">Login</param>
+                <param name="position">采购员</param>
+            </interceptor>
+        </interceptors>
+
+        <global-results>
+            <result name="noPermission" type="redirect">/login.jsp</result>
+        </global-results>
+
+        <!--页面指向-->
+        <action name="purchaseNotice" class="action.PurchaseAction" method="notice">
+            <interceptor-ref name="purchaseLogin"/>
+            <result>/purchase/purchase-notice.jsp</result>
+        </action>
+        <action name="purchaseSupplier" class="action.PurchaseAction" method="supplier">
+            <interceptor-ref name="purchaseLogin"/>
+            <result>/purchase/purchase-supplier.jsp</result>
+        </action>
+        <action name="purchaseList" class="action.PurchaseAction" method="list">
+            <interceptor-ref name="purchaseLogin" />
+            <result>/purchase/purchase-list.jsp</result>
+        </action>
+        <action name="purchaseCheck" class="action.PurchaseAction" method="check">
+            <interceptor-ref name="purchaseLogin" />
+            <result>/purchase/purchase-check.jsp</result>
+        </action>
+    </package>
+
+    <!--库管员action-->
+    <package name="stock" extends="struts-default">
+        <interceptors>
+            <interceptor name="stockLogin" class="interceptor.LoginInterceptor">
+                <param name="status">Login</param>
+                <param name="position">库管员</param>
+            </interceptor>
+        </interceptors>
+
+        <global-results>
+            <result name="noPermission" type="redirect">/login.jsp</result>
+        </global-results>
+
+        <!--页面指向-->
+        <action name="stockStatus" class="action.StockAction" method="status">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-notice.jsp</result>
+        </action>
+        <action name="stockExport" class="action.StockAction" method="export">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-export.jsp</result>
+        </action>
+        <action name="stockImport" class="action.StockAction" method="impart">
+            <interceptor-ref name="stockLogin" />
+            <result>/stockman/stockman-import.jsp</result>
+        </action>
+    </package>
+
+    <!--部门经理action-->
+    <package name="divManager" extends="struts-default">
+        <interceptors>
+            <interceptor name="divManagerLogin" class="interceptor.LoginInterceptor">
+                <param name="status">Login</param>
+                <param name="position">部门经理</param>
+            </interceptor>
+        </interceptors>
+
+        <global-results>
+            <result name="noPermission" type="redirect">/login.jsp</result>
+        </global-results>
+
+        <!--页面指向-->
+        <action name="divManagerNotice" class="action.DivManagerAction" method="notice">
+            <interceptor-ref name="divManagerLogin"/>
+            <result>/divManager/divManager-notice.jsp</result>
+        </action>
+        <action name="divManagerList" class="action.DivManagerAction" method="query">
+            <interceptor-ref name="divManagerLogin"/>
+            <result>/divManager/divManager-query.jsp</result>
+        </action>
+        <action name="divManagerWork" class="action.DivManagerAction" method="work">
+            <interceptor-ref name="divManagerLogin"/>
+            <result>/divManager/divManager-work.jsp</result>
+        </action>
+    </package>
+
+    <!--总经理action-->
+    <package name="manager" extends="struts-default">
+        <interceptors>
+            <interceptor name="managerLogin" class="interceptor.LoginInterceptor">
+                <param name="status">Login</param>
+                <param name="position">总经理</param>
+            </interceptor>
+        </interceptors>
+
+        <global-results>
+            <result name="noPermission" type="redirect">/login.jsp</result>
+        </global-results>
+
+        <!--页面指向-->
+        <action name="managerNotice" class="action.ManagerAction" method="notice">
+            <interceptor-ref name="managerLogin"/>
+            <result>/boss/manager-notice.jsp</result>
+        </action>
+        <action name="managerList" class="action.ManagerAction" method="query">
+            <interceptor-ref name="managerLogin"/>
+            <result>/boss/manager-query.jsp</result>
+        </action>
+        <action name="managerOrder" class="action.ManagerAction" method="orders">
+            <interceptor-ref name="managerLogin"/>
+            <result>/boss/manager-order.jsp</result>
+        </action>
+        <action name="managerWork" class="action.ManagerAction" method="work">
+            <interceptor-ref name="managerLogin"/>
+            <result>/boss/manager-work.jsp</result>
+        </action>
+    </package>
+
 </struts>

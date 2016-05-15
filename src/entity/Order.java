@@ -30,7 +30,7 @@ public class Order {
 
     @Id
     @Column(name = "orderID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getOrderId() {
         return orderId;
     }

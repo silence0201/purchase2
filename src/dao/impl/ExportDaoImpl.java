@@ -1,7 +1,10 @@
 package dao.impl;
 
+import com.sun.org.apache.regexp.internal.RE;
 import dao.ExportDao;
 import entity.Export;
+import entity.Item;
+import entity.Request;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -63,8 +66,15 @@ public class ExportDaoImpl implements ExportDao{
     @Override
     public boolean add(Export export) {
         Session session = HibernateUtil.getSession() ;
+        Request request = export.getRequest() ;
+        request.setRequestStatus("完成");
+        Item item = request.getItem() ;
+        int invertory = item.getInventory() - request.getNumber() ;
+        item.setInventory(invertory);
         try {
             session.beginTransaction() ;
+            session.update(item);
+            session.update(request);
             session.save(export) ;
             session.getTransaction().commit();
             return true ;

@@ -36,9 +36,9 @@ public class ProviderDaoImpl implements ProviderDao {
         Session session = HibernateUtil.getSession() ;
 
         try{
-            session.beginTransaction() ;
+            Transaction tx = session.beginTransaction() ;
             session.save(provider) ;
-            session.getTransaction().commit();
+            tx.commit();
             return true ;
         }catch (Exception e){
             session.getTransaction().rollback();
@@ -56,8 +56,9 @@ public class ProviderDaoImpl implements ProviderDao {
         try {
             session.beginTransaction() ;
             session.delete(provider);
+            boolean flag = new ProviderItemDaoImpl().delProvider(provider.getProviderId()) ;
             session.getTransaction().commit();
-            return true ;
+            return flag ;
         }catch (Exception e){
             session.getTransaction().rollback();
         }finally {
