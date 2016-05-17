@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
     <title>申请员->采购申请</title>
@@ -28,9 +29,9 @@
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="">需求部门</a>
+                <a   class="user_status" href="requestNotice.action">需求部门</a>
                 <div class="place_driver"></div>
-                <a   class="current" href="">需求申请</a>
+                <a   class="current" href="requestRequest.action">需求申请</a>
             </article>
         </div>
     </section>
@@ -45,37 +46,29 @@
             <header class="">
                 <h3>需求信息</h3>
             </header>
-
-            <form action="">
-                <br />
+            <br /><br />
+            <form action="requestAdd.action">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <label for="itemName">商品名称:</label>
+                <label for="item">商品名称:</label>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <select id="itemName" name="itemName" style="width:160px;">
+                <select id="item" name="item" style="width:160px;">
                     <c:forEach items="${ requestScope.items }" var="item">
                         <option value="${ item.getItemId() }">${ item.getItemName() }</option>
                     </c:forEach>
                 </select>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <label for="number">商品单价：</label>
-                <input type="text" id="price" name="price" readonly="readonly">
 
                 <br /><br />
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <label for="number" >数量 :</label>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <input type="text" id="number" name="number">
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <label for="Account">总金额 :</label>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <input type="text" id="Account" name="Account" readonly="readonly">
 
                 <br /><br /><br /><br />
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 申请理由：
                 <br /><br />
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <textarea rows="12" cols="80%" id="extra" style="margin-left: 39px;" name="reason" id="reason"></textarea>
+                <textarea rows="12" cols="80%" style="margin-left: 39px;" name="reason" id="reason" ></textarea>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <br /><br />
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>

@@ -28,7 +28,7 @@
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="#">部门经理</a>
+                <a   class="user_status" href="divManagerNotice.action">部门经理</a>
                 <div class="place_driver"></div>
                 <a  class="current" href="#">审核查看</a>
             </article>
@@ -43,7 +43,6 @@
                 <h3>审核信息</h3>
             </header>
             <table class="table table-striped table-hover table-bordered">
-                <thead>
                     <tr>
                         <td>需求单编号</td>
                         <td>申请人</td>
@@ -52,10 +51,9 @@
                         <td>金额</td>
                         <td>状态</td>
                         <td>审核时间</td>
+                        <td>&nbsp;</td>
                     </tr>
-                </thead>
 
-                <tbody>
                     <c:forEach items="${ requestScope.checkList }" var="check" varStatus="status">
                         <c:if test="${ status.index < 15}">
                             <tr>
@@ -66,10 +64,10 @@
                                 <td>${ check.getTotalCost() }</td>
                                 <td>${ check.getRequestStatus() }</td>
                                 <td>${ check.getAuditTime() }</td>
+                                <td><a href="divManagerInfo.action?requestID=${ check.getRequestId() }">详情</a></td>
                             </tr>
                         </c:if>
                     </c:forEach>
-                </tbody>
 
             </table>
         </div>

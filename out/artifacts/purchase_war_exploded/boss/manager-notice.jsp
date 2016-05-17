@@ -49,7 +49,7 @@
                 <c:if test="${ sessionScope.count != 0 }">
                     <h3>&nbsp;&nbsp;需审核</h3>
                     <c:forEach items="${ requestScope.checkNotices }" var="checkNotice">
-                        <p class="alert-info noticeCon">你有订单号为<a>${ checkNotice }</a>的需求需要审核</p>
+                        <p class="alert-info noticeCon">你有订单号为<a href="managerInitHandle.action?requestID=${ checkNotice }">${ checkNotice }</a>的需求需要审核</p>
                     </c:forEach>
                 </c:if>
             </div>
@@ -74,14 +74,15 @@
                 </tr>
                 <c:forEach items="${ requestScope.checkList }" var="check" varStatus="status">
                 <c:if test="${ status.index < 8 }">
-                <tr>
-                    <td>${ check.getRequestId() }</td>
-                    <td>${ check.getItem().getItemName() }</td>
-                    <td>${ check.getNumber() }</td>
-                    <td>${ check.getAuditTime() }</td>
-                </tr>
-                </c:if>
+                    <tr>
+                        <td>${ check.getRequestId() }</td>
+                        <td>${ check.getItem().getItemName() }</td>
+                        <td>${ check.getNumber() }</td>
+                        <td>${ check.getAuditTime() }</td>
+                    </tr>
+                    </c:if>
                 </c:forEach>
+             </table>
         </div>
     </section>
 </body>

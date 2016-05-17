@@ -43,7 +43,6 @@
                 <h3>需求单列表</h3>
             </header>
             <table class="table table-striped table-hover table-bordered">
-                <thead>
                     <tr>
                         <td>需求单编号</td>
                         <td>申请人</td>
@@ -52,9 +51,8 @@
                         <td>金额</td>
                         <td>状态</td>
                         <td>申请时间</td>
+                        <td>&nbsp;</td>
                     </tr>
-                </thead>
-                <tbody>
                     <c:forEach items="${ requestScope.requests }" var="request" varStatus="status">
                         <c:if test="${ status.index<15 }">
                             <tr>
@@ -65,10 +63,10 @@
                                 <td>${ request.getTotalCost() }</td>
                                 <td>${ request.getRequestStatus() }</td>
                                 <td>${ request.getRequestTime() }</td>
+                                <td><a href="managerRequestInfo.action?requestID=${ request.getRequestId()}">详情</a></td>
                             </tr>
                         </c:if>
                     </c:forEach>
-                </tbody>
             </table>
         </div>
         <div id="side_div1">

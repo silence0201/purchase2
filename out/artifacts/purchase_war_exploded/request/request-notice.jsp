@@ -28,9 +28,9 @@
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="#">采购部门</a>
+                <a   class="user_status" href="requestNotice.action">需求部门</a>
                 <div class="place_driver"></div>
-                <a  class="current" href="#">待办事项</a>
+                <a  class="current" href="requestNotice.action">待办事项</a>
             </article>
         </div>
     </section>
@@ -53,21 +53,21 @@
                     <h3>&nbsp;&nbsp;已到货</h3>
                 </c:if>
                 <c:forEach items="${ requestScope.notices }" var="notice">
-                    <p class="alert-info noticeCon">你有订单号为<a>${ notice }</a>的订单已经到货</p>
+                    <p class="alert-info noticeCon">你有订单号为<a href="requestInfo.action?requestID=${ notice }">${ notice }</a>的订单已经到货</p>
                 </c:forEach>
 
                 <c:if test="${ requestScope.passes.size() != 0 }">
                     <h3>&nbsp;&nbsp;通过</h3>
                 </c:if>
                 <c:forEach items="${ requestScope.passes }" var="pass">
-                    <p class="alert-success noticeCon">你有订单号为<a>${ pass }</a>的订单已经通过</p>
+                    <p class="alert-success noticeCon">你有订单号为<a href="requestInfo.action?requestID=${ pass }">${ pass }</a>的订单已经通过</p>
                 </c:forEach>
 
                 <c:if test="${ requestScope.refuses.size() != 0 }">
                     <h3>&nbsp;&nbsp;拒绝</h3>
                 </c:if>
                 <c:forEach items="${ requestScope.refuses }" var="refuse">
-                    <p class="alert-warning noticeCon">你有订单号为<a>${ refuse }</a>的订单已经被拒绝</p>
+                    <p class="alert-warning noticeCon">你有订单号为<a href="requestInfo.action?requestID=${ refuse }">${ refuse }</a>的订单已经被拒绝</p>
                 </c:forEach>
             </div>
         </div>

@@ -8,6 +8,7 @@ import service.IDiVManagerService;
 import service.impl.IDivManagerServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Description: DivManagerAction
@@ -18,15 +19,14 @@ public class DivManagerAction extends ActionSupport {
 
     private IDiVManagerService service ;
 
-    private int requestID ;
-    private String status ;
+    private Request request ;
 
-    public int getRequestID() {
-        return requestID;
+    public Request getRequest() {
+        return request;
     }
 
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
+    public void setRequest(Request request) {
+        this.request = request;
     }
 
     public IDiVManagerService getService() {
@@ -37,22 +37,39 @@ public class DivManagerAction extends ActionSupport {
         this.service = service;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     //显示审核信息页面
     public String info(){
+        service = new IDivManagerServiceImpl() ;
+        User user = (User) ActionContext.getContext().getSession().get("user") ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+        Request request = service.getRequestInfo(Integer.parseInt(requestID)) ;
+        ArrayList<Request> checkList = service.getCheckList(user.getUserId()) ;
+
+        ActionContext.getContext().put("request",request);
+        ActionContext.getContext().put("checkList",checkList);
+
         return SUCCESS ;
     }
 
     //处理审核
     public String handle(){
-        return SUCCESS ;
+        service = new IDivManagerServiceImpl() ;
+        User user = (User) ActionContext.getContext().getSession().get("user");
+        Map pragram = ActionContext.getContext().getParameters() ;
+
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+        String status = ((String[]) pragram.get("status"))[0];
+        String reason = ((String[]) pragram.get("reason"))[0];
+        String userID = user.getUserId() ;
+
+        boolean flag = service.handle(requestID,status,reason,userID) ;
+
+        if (flag){
+            return SUCCESS ;
+        }
+        return ERROR ;
     }
 
 
@@ -113,5 +130,24 @@ public class DivManagerAction extends ActionSupport {
 
 
         return SUCCESS ;
+    }
+
+    //显示具体详情
+    public String moreInfo(){
+        service = new IDivManagerServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+        request = service.getRequestInfo(Integer.parseInt(requestID)) ;
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+        int coutOfTime = service.getCountOfTime(user.getUserId()) ;
+        double sumOfMoney = service.getSumOfMoney(user.getUserId()) ;
+        ActionContext.getContext().put("countOfTime",coutOfTime);
+        ActionContext.getContext().put("sumOfMoney",sumOfMoney);
+        if (request !=null){
+            return SUCCESS ;
+        }
+
+        return INPUT ;
     }
 }

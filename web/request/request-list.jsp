@@ -28,9 +28,9 @@
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="#">需求部门</a>
+                <a   class="user_status" href="requestNotice.action">需求部门</a>
                 <div class="place_driver"></div>
-                <a  class="current" href="#">表单查询</a>
+                <a  class="current" href="requestList.action">表单查询</a>
             </article>
         </div>
     </section>
@@ -46,7 +46,6 @@
                 <h3>需求记录</h3>
             </header>
             <table class="table table-striped table-hover table-bordered">
-                <thead>
                 <tr>
                     <td>需求单编号</td>
                     <td>物品名称</td>
@@ -56,8 +55,6 @@
                     <td>申请时间</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
-                </thead>
-                <tbody>
                 <c:forEach items="${ requestScope.requests }" varStatus="status" var="request">
                     <c:if test="${ status.index <20 }">
                         <tr>
@@ -67,11 +64,19 @@
                             <td>${ request.getTotalCost() }</td>
                             <td>${ request.getRequestStatus() }</td>
                             <td>${ request.getRequestTime() }</td>
-                            <td><a>修改</a>&nbsp;&nbsp;<a>删除</a></td>
+                            <td><a href="requestInfo.action?requestID=${ request.getRequestId()}">详情</a>&nbsp;
+                                <c:if test="${ request.getRequestStatus().equals('未审核')}">
+                                    <a href="requestInitModify.action?requestID=${ request.getRequestId()}">修改</a>&nbsp;
+                                    <a href="requestDel.action?requestID=${ request.getRequestId()}">删除</a>
+                                </c:if>
+                                <c:if test="${ !request.getRequestStatus().equals('未审核')}">
+                                    <font color="gray">修改</font>&nbsp;
+                                    <font color="gray">删除</font>
+                                </c:if>
+                            </td>
                         </tr>
                     </c:if>
                 </c:forEach>
-                </tbody>
             </table>
         </div>
         <div id="side_div1">

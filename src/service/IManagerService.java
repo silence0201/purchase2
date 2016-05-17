@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public interface IManagerService {
     //需求审核处理
-    public abstract boolean handle(Request request) ;
+    public abstract boolean handle(String requestID,String status,String reason,String userID) ;
 
     //需求信息获取
     public abstract Request getRequestInfo (String requestID) ;
@@ -24,9 +24,6 @@ public interface IManagerService {
 
     //获取公司内本月所有的申请信息
     public abstract ArrayList<Request> getRequestList();
-
-    //获取审核历史记录
-//    public abstract ArrayList<Request> getCheckList();
 
     //获取当月申请单数
     public abstract int getCountOfRequest() ;

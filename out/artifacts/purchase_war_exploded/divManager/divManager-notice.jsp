@@ -28,7 +28,7 @@
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="#">部门经理</a>
+                <a   class="user_status" href="divManagerNotice.action">部门经理</a>
                 <div class="place_driver"></div>
                 <a  class="current" href="#">待办事项</a>
             </article>
@@ -49,7 +49,7 @@
                 <c:if test="${ sessionScope.count != 0 }">
                     <h3>&nbsp;&nbsp;需审核</h3>
                     <c:forEach items="${ requestScope.checkNotices }" var="checkNotice">
-                        <p class="alert-info noticeCon">你有订单号为<a>${ checkNotice }</a>的需求需要审核</p>
+                        <p class="alert-info noticeCon">你有订单号为<a href="divManagerInitHandle.action?requestID=${ checkNotice }">${ checkNotice }</a>的需求需要审核</p>
                     </c:forEach>
                 </c:if>
             </div>

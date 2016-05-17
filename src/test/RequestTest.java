@@ -88,7 +88,7 @@ public class RequestTest {
         request.setRequestStatus("未审核");
         request.setReason("没有理由");
 
-        boolean flag = requestDao.addRequest(request) ;
+        Integer flag = requestDao.addRequest(request) ;
         System.out.println(flag);
     }
 

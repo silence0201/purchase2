@@ -2,9 +2,13 @@ package service.impl;
 
 import dao.RequestDao;
 import dao.impl.RequestDaoImpl;
+import dao.impl.UserDaoImpl;
 import entity.Request;
+import entity.User;
 import service.IDiVManagerService;
+import util.DateUtil;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -16,14 +20,29 @@ public class IDivManagerServiceImpl implements IDiVManagerService {
 
     RequestDao requestDao  ;
 
+
     @Override
-    public boolean handle(Request request) {
-        return false;
+    public boolean handle(String requestID, String staus, String reason,String auditor) {
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(Integer.parseInt(requestID)) ;
+        request.setAuditor(new UserDaoImpl().getByID(auditor));
+        request.setAuditTime(new Date(DateUtil.currentDate()));
+        request.setReason(reason);
+        request.setRequestStatus(staus);
+
+        boolean flag = requestDao.modifyRequest(request) ;
+
+        return flag;
     }
 
     @Override
     public Request getRequestInfo(int requestID) {
-        return null;
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(requestID) ;
+
+        return request;
     }
 
     @Override

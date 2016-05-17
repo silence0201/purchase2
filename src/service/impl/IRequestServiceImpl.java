@@ -2,12 +2,16 @@ package service.impl;
 
 import dao.ItemDao;
 import dao.RequestDao;
+import dao.UserDao;
 import dao.impl.ItemDaoImpl;
 import dao.impl.RequestDaoImpl;
+import dao.impl.UserDaoImpl;
 import entity.Item;
 import entity.Request;
+import entity.User;
 import service.IRequestService;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +23,15 @@ import java.util.HashMap;
 public class IRequestServiceImpl implements IRequestService {
     private RequestDao requestDao ;
     private ItemDao itemDao ;
+    private UserDao userDao ;
+
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public ItemDao getItemDao() {
         return itemDao;
@@ -38,17 +51,58 @@ public class IRequestServiceImpl implements IRequestService {
 
     @Override
     public Request getRequestInfo(String requestID) {
-        return null;
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(Integer.parseInt(requestID)) ;
+
+        return request;
     }
 
     @Override
-    public boolean modifyRequest(Request request) {
-        return false;
+    public boolean modifyRequest(String requestID,String number) {
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(Integer.parseInt(requestID)) ;
+        request.setNumber(Integer.parseInt(number));
+        boolean flag = requestDao.modifyRequest(request) ;
+
+        return flag;
     }
 
     @Override
-    public boolean addRequest(Request request) {
-        return false;
+    public Integer addRequest(String userID,String number,String itemID,String reason) {
+        requestDao = new RequestDaoImpl() ;
+        itemDao = new ItemDaoImpl() ;
+        userDao = new UserDaoImpl() ;
+
+        Request request = new Request() ;
+        Item item = itemDao.item(Integer.parseInt(itemID)) ;
+        User user = userDao.getByID(userID) ;
+        request.setItem(item);
+        request.setRequestMan(user);
+        request.setNumber(Integer.parseInt(number));
+        request.setTotalCost(Integer.parseInt(number)* item.getAvePrice());
+        request.setRequestTime(new Date(System.currentTimeMillis()));
+        int inventory = item.getInventory() ;
+        if (inventory > request.getNumber()){
+            request.setRequestStatus("有货");
+        }else{
+            request.setRequestStatus("未审核");
+        }
+        request.setReason(reason);
+
+        return requestDao.addRequest(request);
+    }
+
+    @Override
+    public boolean delRequest(String requestID) {
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(Integer.parseInt(requestID)) ;
+
+        boolean flag = requestDao.delRequest(request) ;
+
+        return flag;
     }
 
     //----获取信息----//

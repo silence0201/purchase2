@@ -57,6 +57,38 @@
             <interceptor-ref name="requestLogin"/>
             <result name="success">/request/request-request.jsp</result>
         </action>
+
+        <!--查看详细信息页面-->
+        <action name="requestInfo" class="action.RequestAction" method="info">
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/request/request-info.jsp</result>
+        </action>
+
+        <!--添加申请-->
+        <action name="requestAdd" class="action.RequestAction" method="add">
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/request/request-addResult.jsp</result>
+            <result name="error">/request/request-addResult.jsp</result>
+        </action>
+
+        <!--修改申请单-->
+        <action name="requestInitModify" class="action.RequestAction" method="initModify">
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/request/request-modify.jsp</result>
+            <result name="input">/request/request-list.jsp</result>
+        </action>
+        <action name="requestModify" class="action.RequestAction" method="modify" >
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--删除申请单-->
+        <action name="requestDel" class="action.RequestAction" method="del">
+            <interceptor-ref name="requestLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
     </package>
 
     <!--采购员action-->
@@ -88,6 +120,7 @@
         <action name="purchaseCheck" class="action.PurchaseAction" method="check">
             <interceptor-ref name="purchaseLogin" />
             <result>/purchase/purchase-check.jsp</result>
+            <result name="input" type="redirect">purchaseNotice.action</result>
         </action>
     </package>
 
@@ -145,6 +178,27 @@
             <interceptor-ref name="divManagerLogin"/>
             <result>/divManager/divManager-work.jsp</result>
         </action>
+
+        <!--审核处理-->
+        <action name="divManagerInitHandle" class="action.DivManagerAction" method="info">
+            <interceptor-ref name="divManagerLogin"/>
+            <result name="input">/divManager/divManager-notice.jsp</result>
+            <result>/divManager/divManager-handle.jsp</result>
+        </action>
+
+        <action name="divManagerHandle" class="action.DivManagerAction" method="handle">
+            <interceptor-ref name="divManagerLogin"/>
+            <result name="error">/common/error.jsp</result>
+            <result name="success">/common/success.jsp</result>
+        </action>
+
+        <!--显示申请详细信息-->
+        <action name="divManagerInfo" class="action.DivManagerAction" method="moreInfo">
+            <interceptor-ref name="divManagerLogin"/>
+            <result name="input">/divManager/divManager-work.jsp</result>
+            <result name="success">/divManager/divManager-info.jsp</result>
+        </action>
+
     </package>
 
     <!--总经理action-->
@@ -176,6 +230,29 @@
         <action name="managerWork" class="action.ManagerAction" method="work">
             <interceptor-ref name="managerLogin"/>
             <result>/boss/manager-work.jsp</result>
+        </action>
+
+        <!--审核处理-->
+        <action name="managerInitHandle" class="action.ManagerAction" method="info">
+            <interceptor-ref name="managerLogin"/>
+            <result name="success">/boss/manager-handle.jsp</result>
+            <result name="input">/boss/manager-notice.jsp</result>
+        </action>
+
+        <action name="managerHandle" class="action.ManagerAction" method="handle">
+            <interceptor-ref name="managerLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--显示详细信息-->
+        <action name="managerRequestInfo" class="action.ManagerAction" method="moreRequestInfo">
+            <interceptor-ref name="managerLogin"/>
+            <result name="success">/boss/manager-request.jsp</result>
+        </action>
+        <action name="managerOrderInfo" class="action.ManagerAction" method="moreOrderInfo">
+            <interceptor-ref name="managerLogin"/>
+            <result name="success">/boss/manager-orderInfo.jsp</result>
         </action>
     </package>
 

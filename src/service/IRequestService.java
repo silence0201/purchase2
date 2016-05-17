@@ -17,10 +17,13 @@ public interface IRequestService {
     public abstract Request getRequestInfo(String requestID) ;
 
     //修改申请单信息
-    public abstract boolean modifyRequest(Request request) ;
+    public abstract boolean modifyRequest(String requestID,String number) ;
 
     //添加申请单信息
-    public abstract boolean addRequest(Request request) ;
+    public abstract Integer addRequest(String userID,String number,String itemID,String reason) ;
+
+    //删除申请单
+    public abstract boolean delRequest(String requestID) ;
 
     //------获取信息----------//
 

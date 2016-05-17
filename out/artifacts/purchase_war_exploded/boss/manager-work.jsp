@@ -52,6 +52,7 @@
                     <td>金额</td>
                     <td>状态</td>
                     <td>审核时间</td>
+                    <td>&nbsp;</td>
                 </tr>
                 </thead>
 
@@ -66,6 +67,7 @@
                             <td>${ check.getTotalCost() }</td>
                             <td>${ check.getRequestStatus() }</td>
                             <td>${ check.getAuditTime() }</td>
+                            <td><a href="managerRequestInfo.action?requestID=${ check.getRequestId()}">详情</a></td>
                         </tr>
                     </c:if>
                 </c:forEach>

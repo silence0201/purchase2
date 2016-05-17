@@ -52,6 +52,7 @@
                         <td>金额</td>
                         <td>状态</td>
                         <td>申请时间</td>
+                        <td>&nbsp;</td>
                     </tr>
                 </thead>
 
@@ -66,6 +67,7 @@
                                 <td>${ request.getTotalCost() }</td>
                                 <td>${ request.getRequestStatus() }</td>
                                 <td>${ request.getRequestTime() }</td>
+                                <td><a href="divManagerInfo.action?requestID=${ request.getRequestId()}">详情</a></td>
                             </tr>
                         </c:if>
                     </c:forEach>

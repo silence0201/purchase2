@@ -21,7 +21,6 @@ public class RequestAction extends ActionSupport {
 
     private IRequestService service ;
 
-    private int requestID ;
     private Request request ;
 
     public Request getRequest() {
@@ -30,14 +29,6 @@ public class RequestAction extends ActionSupport {
 
     public void setRequest(Request request) {
         this.request = request;
-    }
-
-    public int getRequestID() {
-        return requestID;
-    }
-
-    public void setRequestID(int requestID) {
-        this.requestID = requestID;
     }
 
     public IRequestService getService() {
@@ -50,22 +41,81 @@ public class RequestAction extends ActionSupport {
 
     //获取详细信息
     public String info(){
+        service = new IRequestServiceImpl() ;
+        Map session = ActionContext.getContext().getSession() ;
+        User user = (User) session.get("user");
+        ArrayList<Request> requests = service.getRequestList(user.getUserId()) ;
+        ActionContext.getContext().put("requests",requests);
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+
+
+        if (requestID == null){
+            return INPUT ;
+        }
+        request = service.getRequestInfo(requestID) ;
         return  SUCCESS ;
     }
 
     //添加申请单
     public String add(){
+        service = new IRequestServiceImpl() ;
+        Map session = ActionContext.getContext().getSession() ;
+        User user = (User) session.get("user");
+        int countOfTime = service.countOfTime(user.getUserId()) ;
+        double countOfMoney = service.countOfMoney(user.getUserId()) ;
+        ActionContext.getContext().put("countOfTime",countOfTime);
+        ActionContext.getContext().put("countOfMoney",countOfMoney);
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String itemID = ((String[]) pragram.get("item"))[0];
+        String number = ((String[]) pragram.get("number"))[0] ;
+        String reason = ((String[]) pragram.get("reason"))[0] ;
+        String userID = user.getUserId() ;
+
+        Integer requestID = service.addRequest(userID,number,itemID,reason) ;
+        if (requestID.equals(0)){
+            return ERROR ;
+        }
+        request = service.getRequestInfo(requestID.toString()) ;
         return SUCCESS ;
     }
 
     //初始化修改页面
     public String initModify(){
-        return SUCCESS ;
+        service = new IRequestServiceImpl() ;
+
+        User user = (User)ActionContext.getContext().getSession().get("user") ;
+        ArrayList<Request> requests = service.getRequestList(user.getUserId()) ;
+        ActionContext.getContext().put("requests",requests);
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+        ActionContext.getContext().put("requestID",requestID);
+
+
+        if (requestID == null){
+            return INPUT ;
+        }
+        request = service.getRequestInfo(requestID) ;
+        ActionContext.getContext().put("number",request.getNumber());
+        return  SUCCESS ;
     }
 
     //修改申请单
     public String modify(){
-        return SUCCESS ;
+        service = new IRequestServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+        String number = ((String[]) pragram.get("number"))[0] ;
+
+        if (service.modifyRequest(requestID,number)){
+            return SUCCESS ;
+        }else{
+            return ERROR ;
+        }
     }
 
     //初始化通知页面
@@ -122,5 +172,19 @@ public class RequestAction extends ActionSupport {
         ActionContext.getContext().put("items",items);
 
         return SUCCESS ;
+    }
+
+    //删除申请
+    public String del(){
+        service = new IRequestServiceImpl() ;
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String requestID = ((String[]) pragram.get("requestID"))[0];
+
+        boolean flag = service.delRequest(requestID) ;
+        if (flag){
+            return SUCCESS ;
+        }else{
+            return ERROR ;
+        }
     }
 }

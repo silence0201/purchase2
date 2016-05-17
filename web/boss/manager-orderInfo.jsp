@@ -1,15 +1,15 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: silence
-  Date: 16/5/13
-  Time: 下午8:29
+  Date: 16/5/17
+  Time: 下午7:47
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>部门经理->申请查看</title>
+    <title>部门经理->订单详情</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/manager.css">
@@ -17,7 +17,6 @@
 <body>
 <%--firsthead--%>
 <%@ include file="../common/head.jsp" %>
-
 <%--secondhead--%>
 <section id="second_bar">
     <div class="user">
@@ -40,31 +39,47 @@
 <section id="main">
     <div id = "main_div">
         <header class="notice">
-            <h3>订单列表</h3>
+            <h3>订单信息</h3>
         </header>
-        <table class="table table-striped table-hover table-bordered">
+        <h4>&nbsp;&nbsp;订单编号是:${requestScope.arder.orderId} </h4>
+        <h4>&nbsp;&nbsp;订单状态：${requestScope.arder.orderStatus}</h4>
+        <table class="table table-bordered">
             <tr>
-                <td>订单编号</td>
-                <td>商品</td>
-                <td>数量</td>
-                <td>花费</td>
-                <td>采购人</td>
-                <td>采购时间</td>
-                <td>采购状态</td>
-                <td>&nbsp;</td>
+                <td class="active">采购人</td>
+                <td>${requestScope.arder.orderMan.userName}</td>
+                <td class="active">采购时间</td>
+                <td>${requestScope.arder.orderTime}</td>
             </tr>
+            <tr>
+                <td class="active">计划单编号</td>
+                <td>${ requestScope.arder.plan.planId}</td>
+                <td class="active">计划生成时间</td>
+                <td>${requestScope.arder.plan.number }</td>
+            </tr>
+            <tr>
+                <td class="active">商品</td>
+                <td>${requestScope.arder.plan.item.itemName }</td>
+                <td class="active">单价</td>
+                <td>${requestScope.arder.plan.item.avePrice }</td>
+            </tr>
+            <tr>
+                <td class="active">数量</td>
+                <td>${ requestScope.arder.plan.number }</td>
+                <td class="active">总额</td>
+                <td>${requestScope.arder.plan.totalCost }</td>
+            </tr>
+        </table>
 
-            <c:forEach items="${ requestScope.orders }" var="arder" varStatus="status">
-                <c:if test="${ status.index < 15}">
+        <hr />
+        <h4>&nbsp;&nbsp;申请人详情</h4>
+        <table class="table table-bordered">
+            <c:forEach items="${ requestScope.arder.plan.requests }" var="request" varStatus="status">
+                <c:if test="${status.index < 5}">
                     <tr>
-                        <td>${ arder.getOrderId() }</td>
-                        <td>${ arder.getPlan().getItem().getItemName()}</td>
-                        <td>${ arder.getPlan().getItem().getAvePrice()}</td>
-                        <td>${ arder.getPlan().getTotalCost() }</td>
-                        <td>${ arder.getOrderMan().getUserName()}</td>
-                        <td>${ arder.getOrderTime()}</td>
-                        <td>${ arder.getOrderStatus() }</td>
-                        <td><a href="managerOrderInfo.action?orderID=${ arder.getOrderId()}">详情</a></td>
+                        <td class="active">申请人</td>
+                        <td>${request.requestMan.userName}</td>
+                        <td class="active">申请部门</td>
+                        <td>${request.requestMan.position.split("申请员")[0]}</td>
                     </tr>
                 </c:if>
             </c:forEach>
@@ -99,6 +114,6 @@
         <br />
     </div>
 </section>
+
 </body>
 </html>
-

@@ -4,10 +4,16 @@ import dao.OrderDao;
 import dao.RequestDao;
 import dao.impl.OrderDaoImpl;
 import dao.impl.RequestDaoImpl;
+import dao.impl.UserDaoImpl;
 import entity.Order;
 import entity.Request;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import service.IManagerService;
+import util.DateUtil;
+import util.HibernateUtil;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -37,13 +43,29 @@ public class IManagerServiceImpl implements IManagerService {
     }
 
     @Override
-    public boolean handle(Request request) {
-        return false;
+    public boolean handle(String requestID,String status,String reason,String userID) {
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(Integer.parseInt(requestID)) ;
+        request.setReason(reason);
+        request.setRequestStatus(status);
+        request.setAuditor(new UserDaoImpl().getByID(userID));
+        request.setAuditTime(new Date(DateUtil.currentDate()));
+
+        boolean flag = requestDao.modifyRequest(request) ;
+
+        return flag;
     }
 
     @Override
     public Request getRequestInfo(String requestID) {
-        return null;
+        Session session = HibernateUtil.getSession() ;
+
+        Request request = (Request) session.get(Request.class,new Integer(requestID));
+
+        session.close() ;
+
+        return request;
     }
 
     @Override

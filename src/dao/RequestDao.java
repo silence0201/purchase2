@@ -17,7 +17,8 @@ public interface RequestDao {
     public abstract boolean modifyRequest(Request request) ;  //修改指定的申请单
     public abstract ArrayList<Request> requestList(String requestManID,String position) ;  //获取申请单列表
     public abstract ArrayList<Request> needPurchaseRequest() ;  //获取需要采购的申请单
-    public abstract boolean addRequest(Request request) ;  //添加申请信息
+    public abstract Integer addRequest(Request request) ;  //添加申请信息
+    public abstract boolean delRequest(Request request) ; //删除申请单信息
     public abstract ArrayList<String> checkRequest(String position) ;  //获取需要审核的信息
     public abstract ArrayList<Request> checkRequestList(String auditorID) ;  //获取审核信息
     public abstract int countOfTime(String userID) ;  //获取指定用户月申请次数

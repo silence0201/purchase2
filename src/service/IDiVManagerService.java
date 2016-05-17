@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public interface IDiVManagerService {
 
     //审核处理
-    public abstract boolean handle(Request request) ;
+    public abstract boolean handle(String requestID,String staus,String reason,String auditor) ;
 
     //获取申请单的详细信息
     public abstract Request getRequestInfo(int requestID) ;

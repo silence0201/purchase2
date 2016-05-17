@@ -1,18 +1,18 @@
 <%--
   Created by IntelliJ IDEA.
   User: silence
-  Date: 16/4/25
-  Time: 下午7:45
-  申请单详情页面
+  Date: 16/5/17
+  Time: 下午7:41
+  To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
-    <title>采购员->需求详情</title>
+    <title>部门经理->申请查看</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
-    <link rel="stylesheet" type="text/css" href="../css/request.css">
+    <link rel="stylesheet" type="text/css" href="../css/manager.css">
 </head>
 <body>
     <%--firsthead--%>
@@ -22,30 +22,27 @@
     <section id="second_bar">
         <div class="user">
             <p>${ sessionScope.user.userName }（
-                <a href="requestNotice.action">${ sessionScope.count }个未处理</a>
+                <a href="">${ sessionScope.count }个未处理</a>
                 ）
             </p>
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="requestNotice.action">需求部门</a>
+                <a   class="user_status" href="#">部门经理</a>
                 <div class="place_driver"></div>
-                <a  class="user_status" href="requestNotice.action">待办事项</a>
-                <div class="place_driver"></div>
-                <a  class="current" href="#">需求详情</a>
+                <a  class="current" href="#">申请详情</a>
             </article>
         </div>
     </section>
 
-    <%--function--%>
-    <%@ include file="../common/requestFun.jsp" %>
+    <%--Function--%>
+    <%@include file="../common/manager.jsp"%>
 
     <%--main--%>
     <section id="main">
-        <%--主要功能--%>
         <div id = "main_div">
-            <header class="buyInfo">
-                <h3>需求详情</h3>
+            <header class="notice">
+                <h3>需求单列表</h3>
             </header>
             <br />
             <h4>&nbsp;&nbsp;申请的申请单号是:<s:property value="request.requestId"/> </h4>
@@ -59,7 +56,7 @@
                     <td class="active">申请时间</td>
                     <td><s:property value="request.requestTime"/> </td>
                 </tr>
-                <s:if test="request.auditor !=null">
+                <s:if test="request.auditor != null">
                     <tr>
                         <td class="active">审核人</td>
                         <td><s:property value="request.auditor.userName"/> </td>
@@ -81,41 +78,40 @@
                 </tr>
             </table>
             <hr />
-            <h3>&nbsp;&nbsp;处理理由</h3>
+            <h3>&nbsp;&nbsp;理由</h3>
             <div class="jumbotron">
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;<s:property value="request.reason" /> </p>
             </div>
         </div>
         <div id="side_div1">
             <header id="time">
-                <h3>时间</h3>
+                <h3>日历</h3>
             </header>
             <%@include file="../common/calendar.jsp"%>
         </div>
-        <%--额外功能--%>
+
         <div id="side_div2">
-            <header id="count">
-                <h3>最近申请状态</h3>
+            <header id="curRecord">
+                <h3>申请统计</h3>
             </header>
-            <table class="table table-striped table-hover table-bordered">
-                <tr>
-                    <td><b>需求单编号</b></td>
-                    <td><b>物品名称</b></td>
-                    <td><b>数量</b></td>
-                    <td><b>状态</b></td>
-                </tr>
-                <s:iterator value="#request.requests" var="r" status="status">
-                    <s:if test="#status.count < 6">
-                        <tr>
-                            <td><s:property value="#r.requestId"/> </td>
-                            <td><s:property value="#r.item.itemName"/></td>
-                            <td><s:property value="#r.number"/> </td>
-                            <td><s:property value="#r.requestStatus"/> </td>
-                        </tr>
-                    </s:if>
-                </s:iterator>
-            </table>
+            <br />
+            <p style="font-size: 1.8em;text-align: center;">公司申请统计</p>
+            <hr />
+            <br />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <label style="font-size: 1.3em">总申请次数:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="text" readonly="readonly" value="${ requestScope.allCount}">
+            <br /><br />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <label style="font-size: 1.3em">月累计申请次数:&nbsp;&nbsp;</label>
+            <input type="text" readonly="readonly" value="${ requestScope.count}" />
+            <br /><br />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <label style="font-size: 1.3em">月累计申请金额:&nbsp;&nbsp;</label>
+            <input type="text" readonly="readonly" value="${ requestScope.sum }">
+            <br />
         </div>
     </section>
+
 </body>
 </html>

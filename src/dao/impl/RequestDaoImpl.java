@@ -26,7 +26,8 @@ public class RequestDaoImpl implements RequestDao {
         Transaction tx = session.beginTransaction() ;
 
         String hql = "select request.requestId from Request request " +
-                "where request.requestMan.userId=:requestManID and request.requestStatus ='到货' " +
+                "where request.requestMan.userId=:requestManID and (request.requestStatus ='到货' " +
+                " or request.requestStatus = '有货' )" +
                 " order by request.requestTime desc " ;
 
         Query query = session.createQuery(hql) ;
@@ -180,12 +181,29 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public boolean addRequest(Request request) {
+    public Integer addRequest(Request request) {
+        Session session = HibernateUtil.getSession() ;
+        Integer id = new Integer(0);
+        try {
+            session.beginTransaction() ;
+            session.save(request);
+            session.getTransaction().commit();
+            id = request.getRequestId() ;
+        }catch (Exception e){
+            session.getTransaction().rollback();
+        }finally {
+            session.close() ;
+            return id ;
+        }
+    }
+
+    @Override
+    public boolean delRequest(Request request) {
         Session session = HibernateUtil.getSession() ;
 
         try {
             session.beginTransaction() ;
-            session.save(request);
+            session.delete(request);
             session.getTransaction().commit();
             return true ;
         }catch (Exception e){
