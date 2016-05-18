@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 import util.HibernateUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description: ImportDaoImpl
@@ -61,8 +62,8 @@ public class ImportDaoImpl implements ImportDao {
     public boolean add(Import impart) {
         Session session = HibernateUtil.getSession() ;
         Order order = impart.getOrder() ;
-        order.setOrderStatus("入库完成");
-        ArrayList<Request> requests = (ArrayList<Request>) order.getPlan().getRequests();
+        order.setOrderStatus("采购完成");
+        List<Request> requests = order.getPlan().getRequests();
 
         for (Request request : requests){
             request.setRequestStatus("到货");
@@ -75,7 +76,7 @@ public class ImportDaoImpl implements ImportDao {
 
         try {
             session.beginTransaction() ;
-            session.save(item) ;
+            session.update(item); ;
             session.update(order);
             session.save(impart) ;
             for (Request request : requests){

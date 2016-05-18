@@ -65,21 +65,28 @@
             <tr>
                 <td class="active">数量</td>
                 <td>${ requestScope.arder.plan.number }</td>
-                <td>总额</td>
+                <td class="active">总额</td>
                 <td>${requestScope.arder.plan.totalCost }</td>
             </tr>
         </table>
 
         <hr />
         <h4>&nbsp;&nbsp;申请人详情</h4>
-        <table class="table table-bordered">
+        <table class="table table-striped table-hover table-bordered">
+            <tr>
+                <td>申请人</td>
+                <td>申请部门</td>
+                <td>商品</td>
+                <td>数量</td>
+            </tr>
+
             <c:forEach items="${ requestScope.arder.plan.requests }" var="request" varStatus="status">
                 <c:if test="${status.index < 5}">
                     <tr>
-                        <td class="active">申请人</td>
                         <td>${request.requestMan.userName}</td>
-                        <td class="active">申请部门</td>
                         <td>${request.requestMan.position.split("申请员")[0]}</td>
+                        <td>${request.item.itemName}</td>
+                        <td>${request.number}</td>
                     </tr>
                 </c:if>
             </c:forEach>

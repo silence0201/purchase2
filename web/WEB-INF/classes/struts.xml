@@ -122,6 +122,44 @@
             <result>/purchase/purchase-check.jsp</result>
             <result name="input" type="redirect">purchaseNotice.action</result>
         </action>
+
+        <!--需求审核-->
+        <action name="purchaseRequestInfo" class="action.PurchaseAction" method="requestInfo">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-checkRequest.jsp</result>
+        </action>
+        <action name="purchaseRequestHandle" class="action.PurchaseAction" method="handle">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--计划采购-->
+        <action name="purchasePlanInfo" class="action.PurchaseAction" method="initPlanHandle">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-handlePlan.jsp</result>
+            <result name="input" type="redirect">purchaseNotice.action</result>
+        </action>
+        <action name="purchasePlanHandle" class="action.PurchaseAction" method="planHandle">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-orderInfo.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--订单详情-->
+        <action name="purchaseMoreOrder" class="action.PurchaseAction" method="moreOrderInfo">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-moreOrderInfo.jsp</result>
+            <result name="input" type="redirect">purchaseList.action</result>
+        </action>
+
+        <!--审核详情-->
+        <action name="purchaseMoreCheck" class="action.PurchaseAction" method="moreCheckInfo">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-moreCheckInfo.jsp</result>
+            <result name="input">purchaseCheck.action</result>
+        </action>
+
     </package>
 
     <!--库管员action-->
@@ -149,6 +187,51 @@
         <action name="stockImport" class="action.StockAction" method="impart">
             <interceptor-ref name="stockLogin" />
             <result>/stockman/stockman-import.jsp</result>
+        </action>
+        <action name="stockExportList" class="action.StockAction" method="exportList">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-exportList.jsp</result>
+        </action>
+        <action name="stockImportList" class="action.StockAction" method="importList">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-importList.jsp</result>
+        </action>
+
+        <!--出库确认-->
+        <action name="initExport" class="action.StockAction" method="initExport">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-export.jsp</result>
+        </action>
+        <action name="addExport" class="action.StockAction" method="addExport">
+            <interceptor-ref name="stockLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--出库详细信息-->
+        <action name="exportInfo" class="action.StockAction" method="exportInfo">
+            <interceptor-ref name="stockLogin"/>
+            <result name="input">/stockman/stockman-exportList.jsp</result>
+            <result name="success">/stockman/stockman-exportInfo.jsp</result>
+        </action>
+
+        <!--入库确认-->
+        <action name="initImport" class="action.StockAction" method="initImport">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-import.jsp</result>
+        </action>
+
+        <action name="addImport" class="action.StockAction" method="addImport">
+            <interceptor-ref name="stockLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--入库详细信息-->
+        <action name="importInfo" class="action.StockAction" method="importInfo">
+            <interceptor-ref name="stockLogin"/>
+            <result name="success">/stockman/stockman-importInfo.jsp</result>
+            <result name="error">/stockman/stockman-importList.jsp</result>
         </action>
     </package>
 

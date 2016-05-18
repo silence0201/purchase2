@@ -42,26 +42,22 @@
                 <h3>库存状态</h3>
             </header>
             <table class="table table-striped table-hover table-bordered">
-                <thead>
                     <tr>
                         <td>物品编号</td>
                         <td>物品名称</td>
                         <td>物品平均价格</td>
                         <td>库存</td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${ requestScope.items}" var="item">
-                        <tr>
-                            <td>${ item.getItemId() }</td>
-                            <td>${ item.getItemName() }</td>
-                            <td>${ item.getAvePrice() }</td>
-                            <td>${ item.getInventory() }</td>
-                            <td><a href="">删除</a></td>
-                        </tr>
+                    <c:forEach items="${ requestScope.items}" var="item" varStatus="status">
+                        <c:if test="${status.index < 15}">
+                            <tr>
+                                <td>${ item.getItemId() }</td>
+                                <td>${ item.getItemName() }</td>
+                                <td>${ item.getAvePrice() }</td>
+                                <td>${ item.getInventory() }</td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
-                </tbody>
             </table>
         </div>
         <div id="side_div1">

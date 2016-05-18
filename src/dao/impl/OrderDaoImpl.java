@@ -56,6 +56,7 @@ public class OrderDaoImpl implements OrderDao {
             session.getTransaction().commit();
             return true ;
         }catch (Exception e){
+            System.out.println(e);
             session.getTransaction().rollback();
         }finally {
             session.close() ;

@@ -3,14 +3,25 @@ package service.impl;
 import dao.ExportDao;
 import dao.ImportDao;
 import dao.ItemDao;
+import dao.OrderDao;
+import dao.RequestDao;
+import dao.UserDao;
 import dao.impl.ExportDaoImpl;
 import dao.impl.ImportDaoImpl;
 import dao.impl.ItemDaoImpl;
+import dao.impl.OrderDaoImpl;
+import dao.impl.RequestDaoImpl;
+import dao.impl.UserDaoImpl;
 import entity.Export;
 import entity.Import;
 import entity.Item;
+import entity.Order;
+import entity.Request;
+import entity.User;
 import service.IStockService;
+import util.DateUtil;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +34,9 @@ public class IStockServiceImpl implements IStockService {
     ItemDao itemDao  ;
     ImportDao importDao ;
     ExportDao exportDao ;
+    RequestDao requestDao ;
+    UserDao userDao ;
+    OrderDao orderDao ;
 
     public ItemDao getItemDao() {
         return itemDao;
@@ -33,13 +47,35 @@ public class IStockServiceImpl implements IStockService {
     }
 
     @Override
-    public boolean addImport(Import impart) {
-        return false;
+    public boolean addImport(String orderID,String userID) {
+        importDao = new ImportDaoImpl() ;
+        userDao = new UserDaoImpl() ;
+        Import anImport= new Import() ;
+        Order order = getOrderByID(orderID) ;
+        User user = userDao.getByID(userID) ;
+        anImport.setOrder(order);
+        anImport.setStockMan(user);
+        anImport.setImportTime(new Date(DateUtil.currentDate()));
+
+        boolean flag = importDao.add(anImport) ;
+
+        return flag;
     }
 
     @Override
-    public boolean addExport(Export export) {
-        return false;
+    public boolean addExport(String requestID,String userID) {
+        exportDao = new ExportDaoImpl() ;
+        userDao = new UserDaoImpl() ;
+        Export export = new Export() ;
+        Request request = getRequestByID(requestID) ;
+        User user = userDao.getByID(userID) ;
+        export.setRequest(request);
+        export.setStockMan(user);
+        export.setExportTime(new Date(DateUtil.currentDate()));
+
+        boolean flag = exportDao.add(export) ;
+
+        return flag;
     }
 
     @Override
@@ -85,5 +121,23 @@ public class IStockServiceImpl implements IStockService {
         int count = exportDao.count(stockManID) ;
 
         return count;
+    }
+
+    @Override
+    public Request getRequestByID(String requestID) {
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(Integer.parseInt(requestID)) ;
+
+        return request;
+    }
+
+    @Override
+    public Order getOrderByID(String orderID) {
+        orderDao = new OrderDaoImpl() ;
+
+        Order order = orderDao.getByID(new Integer(orderID)) ;
+
+        return order;
     }
 }

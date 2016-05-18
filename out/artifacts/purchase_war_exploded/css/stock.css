@@ -14,6 +14,15 @@
     padding: 0 0 0 25px;
     background: url(../images/stock/export.png) no-repeat center left;
 }
+#importList a{
+    padding: 0 0 0 25px;
+    background: url(../images/stock/importList.png) no-repeat center left;
+}
+
+#exportList a{
+    padding: 0 0 0 25px;
+    background: url(../images/stock/exportList.png) no-repeat center left;
+}
 
 section #main{
     width: 84%
@@ -76,7 +85,7 @@ fieldset{
 #main_div header {
     height: 38px;
     width: 100%;
-    background: #F1F1F4 url(../images/second_bar.png) repeat-x;
+    background: #F1F1F4 url(../images/common/second_bar.png) repeat-x;
     -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px; border-top-right-radius: 5px;
@@ -93,7 +102,7 @@ fieldset{
 #side_div1 header{
     height: 38px;
     width: 100%;
-    background: #F1F1F4 url(../images/second_bar.png) repeat-x;
+    background: #F1F1F4 url(../images/common/second_bar.png) repeat-x;
     -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px; border-top-right-radius: 5px;
@@ -120,4 +129,11 @@ fieldset{
     float: left;
     margin-top: 5px;
     padding-left: 10px;
+}
+
+.noticeCon{
+    font-size: 1.2em ;
+    height: 2em ;
+    margin: 5px;
+    padding: 5px;
 }

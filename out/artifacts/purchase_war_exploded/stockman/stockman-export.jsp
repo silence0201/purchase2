@@ -42,15 +42,57 @@
                 <h3>出库信息</h3>
             </header>
             <br /><br />
-            <form action="">
+            <form action="initExport.action">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <label for="orderID">需求编号: &nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="text" id="orderID" name="orderID">
+                <label for="requestID">需求编号: &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" id="requestID" name="requestID">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <input type="submit">
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <input type="reset" value="清空">
             </form>
+            <c:if test="${requestScope.r != null}">
+                <c:if test="${requestScope.r.item !=null}">
+                    <hr />
+                    <h4>&nbsp;&nbsp;申请单编号:${requestScope.r.requestId}</h4>
+                    <h4>&nbsp;&nbsp;申请单状态:${requestScope.r.requestStatus}</h4>
+                    <h4>&nbsp;&nbsp;请核对申请单信息:</h4>
+                    <br />
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="active">申请人</td>
+                            <td>${ requestScope.r.requestMan.userName}</td>
+                            <td class="active">申请时间</td>
+                            <td>${requestScope.r.requestTime}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">商品</td>
+                            <td>${ requestScope.r.item.itemName}</td>
+                            <td class="active">单价</td>
+                            <td>${requestScope.r.item.avePrice}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">数量</td>
+                            <td>${requestScope.r.number}</td>
+                            <td class="active">总金额</td>
+                            <td>${requestScope.r.totalCost}</td>
+                        </tr>
+                    </table>
+                    <c:if test="${requestScope.r.requestStatus == '到货' || requestScope.r.requestStatus == '有货'}">
+                        <form action="addExport.action">
+                            <input value="${requestScope.r.requestId}" name="requestID" hidden="hidden" />
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="submit" value="确认">
+                        </form>
+                    </c:if>
+                    <c:if test="${requestScope.r.requestStatus != '到货' && requestScope.r.requestStatus != '有货' }">
+                        <p class="alert-info noticeCon" >请核查申请单的状态</p>
+                    </c:if>
+                </c:if>
+                <c:if test="${requestScope.r.item ==null}" >
+                    <p class="alert-info noticeCon" >请输入正确的申请单编号</p>
+                </c:if>
+            </c:if>
         </div>
         <div id="side_div1">
             <header id="time">
@@ -64,16 +106,13 @@
                 <h3>最近记录</h3>
             </header>
             <table class="table table-striped table-hover table-bordered">
-                <thead>
                 <tr>
                     <td>需求编号</td>
                     <td>商品</td>
                     <td>数量</td>
                     <td>出库库时间</td>
                 </tr>
-                </thead>
 
-                <tbody>
                     <c:forEach items="${ requestScope.exports }" var="export" varStatus="status">
                         <c:if test="${ status.index < 5}">
                             <tr>
@@ -84,7 +123,6 @@
                             </tr>
                         </c:if>
                     </c:forEach>
-                </tbody>
             </table>
         </div>
     </section>

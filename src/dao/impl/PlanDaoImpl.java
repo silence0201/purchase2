@@ -66,7 +66,7 @@ public class PlanDaoImpl implements PlanDao {
         ArrayList<String> planIDs = (ArrayList<String>) query.list();
 
         tx.commit();
-        session.clear();
+        session.close();
 
         return planIDs;
     }
@@ -78,6 +78,7 @@ public class PlanDaoImpl implements PlanDao {
 
         Plan plan = (Plan) session.get(Plan.class,planID);
 
+        session.close() ;
         return plan;
     }
 }

@@ -50,13 +50,13 @@
                 <c:if test="${ requestScope.checkNotice.size() != 0}">
                     <h3>&nbsp;&nbsp;需审核</h3>
                     <c:forEach items="${ requestScope.checkNotice }" var="checkNotice">
-                        <p class="alert-info noticeCon">你有订单号为<a>${ checkNotice }</a>的需求需要审核</p>
+                        <p class="alert-info noticeCon">你有订单号为<a href="purchaseRequestInfo.action?requestID=${ checkNotice }">${ checkNotice }</a>的需求需要审核</p>
                     </c:forEach>
                 </c:if>
                 <c:if test="${ requestScope.needPlans.size() != 0}">
                     <h3>&nbsp;&nbsp;需采购</h3>
                     <c:forEach items="${ requestScope.needPlans }" var="needPlan">
-                        <p class="alert-success noticeCon">你有订单号为<a>${ needPlan }</a>的计划需要采购</p>
+                        <p class="alert-success noticeCon">你有订单号为<a href="purchasePlanInfo.action?planID=${ needPlan }">${ needPlan }</a>的计划需要采购</p>
                     </c:forEach>
                 </c:if>
             </div>

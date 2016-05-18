@@ -43,7 +43,6 @@
                 <h3>订单信息</h3>
             </header>
             <table class="table table-striped table-hover table-bordered">
-                <thead>
                     <tr>
                         <td>订单编号</td>
                         <td>计划单编号</td>
@@ -52,10 +51,8 @@
                         <td>花费</td>
                         <td>采购时间</td>
                         <td>采购状态</td>
+                        <td>&nbsp;</td>
                     </tr>
-                </thead>
-
-                <tbody>
                     <c:forEach items="${ requestScope.orderList }" var="arder" varStatus="status">
                         <c:if test="${ status.index < 15}">
                             <tr>
@@ -66,10 +63,10 @@
                                 <td>${ arder.getPlan().getTotalCost() }</td>
                                 <td>${ arder.getOrderTime()}</td>
                                 <td>${ arder.getOrderStatus() }</td>
+                                <td><a href="purchaseMoreOrder.action?orderID=${ arder.getOrderId() }">详情</a></td>
                             </tr>
                         </c:if>
                     </c:forEach>
-                </tbody>
             </table>
         </div>
         <div id="side_div1">

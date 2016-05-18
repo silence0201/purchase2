@@ -8,6 +8,7 @@ import dao.impl.OrderDaoImpl;
 import dao.impl.PlanDaoImpl;
 import dao.impl.ProviderDaoImpl;
 import dao.impl.RequestDaoImpl;
+import dao.impl.UserDaoImpl;
 import entity.Item;
 import entity.Order;
 import entity.Plan;
@@ -110,8 +111,31 @@ public class IPurchaseServiceImpl implements IPurchaseService {
     }
 
     @Override
-    public boolean handle(Plan plan) {
-        return false;
+    public boolean handle(String requestID,String status,String reason,String userID) {
+        requestDao = new RequestDaoImpl() ;
+
+        Request request = requestDao.requestInfo(new Integer(requestID)) ;
+        request.setReason(reason);
+        request.setRequestStatus(status);
+        request.setAuditor(new UserDaoImpl().getByID(userID));
+        request.setAuditTime(new Date(DateUtil.currentDate()));
+
+        boolean flag = requestDao.modifyRequest(request) ;
+
+        return flag;
+    }
+
+    @Override
+    public Order makeOrder(String planID,String userID) {
+        Plan plan = getPlanByID(planID) ;
+        Order order = new Order() ;
+        order.setOrderMan(new UserDaoImpl().getByID(userID));
+        order.setOrderStatus("采购中");
+        order.setOrderTime(new Date(DateUtil.currentDate()));
+        order.setPlan(plan);
+        orderDao.add(order) ;
+
+        return order;
     }
 
     @Override
@@ -197,5 +221,22 @@ public class IPurchaseServiceImpl implements IPurchaseService {
     @Override
     public ArrayList<Item> getProviderItem(Provider provider) {
         return null;
+    }
+
+    @Override
+    public Request getRequestByID(String requestID) {
+        requestDao = new RequestDaoImpl() ;
+        Request request = requestDao.requestInfo(new Integer(requestID)) ;
+
+        return request ;
+    }
+
+    @Override
+    public Plan getPlanByID(String planID) {
+        planDao = new PlanDaoImpl() ;
+
+        Plan plan = planDao.planInfo(new Integer(planID)) ;
+
+        return plan;
     }
 }

@@ -20,8 +20,11 @@ public interface IPurchaseService {
     //汇总计划
     public abstract boolean creatrPlan() ;
 
+    //处理审核信息
+    public abstract boolean handle(String requestID,String status,String reason,String userID) ;
+
     //处理采购计划
-    public abstract boolean handle(Plan plan) ;
+    public abstract Order makeOrder(String planID,String userID) ;
 
     //添加供应商
     public abstract boolean addProvider(Provider provider) ;
@@ -62,4 +65,10 @@ public interface IPurchaseService {
 
     //获取供应商提供商品的信息
     public ArrayList<Item> getProviderItem(Provider provider);
+
+    //根据id获取申请单
+    public abstract Request getRequestByID(String requestID) ;
+
+    //根据id获取计划单
+    public abstract Plan getPlanByID(String planID) ;
 }

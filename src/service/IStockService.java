@@ -3,6 +3,8 @@ package service;
 import entity.Export;
 import entity.Import;
 import entity.Item;
+import entity.Order;
+import entity.Request;
 
 import java.util.ArrayList;
 
@@ -14,10 +16,10 @@ import java.util.ArrayList;
 public interface IStockService {
 
     //添加入库单信息
-    public abstract boolean addImport(Import impart) ;
+    public abstract boolean addImport(String orderID,String userID) ;
 
     //添加出库单信息
-    public abstract boolean addExport(Export export) ;
+    public abstract boolean addExport(String requestID,String userID) ;
 
     //-----获取信息------//
     //获取物品的相关信息
@@ -34,5 +36,11 @@ public interface IStockService {
 
     //获取一月内入库次数
     public abstract int getCountOfExport(String stockManID);
+
+    //根据id获取申请信息
+    public abstract Request getRequestByID(String requestID) ;
+
+    //感觉id获取订单信息
+    public abstract Order getOrderByID(String orderID) ;
 
 }
