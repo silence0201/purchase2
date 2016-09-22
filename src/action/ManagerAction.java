@@ -7,6 +7,7 @@ import entity.Request;
 import entity.User;
 import service.IManagerService;
 import service.impl.IManagerServiceImpl;
+import util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -139,8 +140,14 @@ public class ManagerAction extends ActionSupport {
 
         ArrayList<Order> orders = service.getOrders() ;
         int allCount = orders.size() ;
-        int count = service.getCountOfOrder() ;
-        double sum = service.getSumOfOrder() ;
+        int count = 0 ;
+        double sum = 0 ;
+        for (Order o : orders){
+            if (o.getOrderTime().after(DateUtil.getStartOfMonth())){
+                count++ ;
+                sum += o.getTotalCost() ;
+            }
+        }
 
         ActionContext.getContext().put("orders",orders);
         ActionContext.getContext().put("allCount",allCount);
@@ -176,14 +183,18 @@ public class ManagerAction extends ActionSupport {
 
         ArrayList<Order> orders = service.getOrders() ;
         int allCount = orders.size() ;
-        int count = service.getCountOfOrder() ;
-        double sum = service.getSumOfOrder() ;
+        int count = 0 ;
+        double sum = 0 ;
         Map pragram = ActionContext.getContext().getParameters() ;
         String orderID = ((String[]) pragram.get("orderID"))[0];
         Order order = null ;
         for (Order arder: orders){
             if (arder.getOrderId().equals(new Integer(orderID))){
                 order = arder ;
+            }
+            if (arder.getOrderTime().after(DateUtil.getStartOfMonth())){
+                count++ ;
+                sum += arder.getTotalCost() ;
             }
         }
 

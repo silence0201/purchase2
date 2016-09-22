@@ -56,9 +56,25 @@
             </tr>
             <tr>
                 <td class="active">物品单价</td>
-                <td>${requestScope.order.plan.item.avePrice}</td>
+                <td>${requestScope.order.provideritem.price}</td>
                 <td class="active">总金额</td>
-                <td>${requestScope.order.plan.totalCost}</td>
+                <td>${requestScope.order.totalCost}</td>
+            </tr>
+            <tr>
+                <td class="active">采购公司</td>
+                <td>${requestScope.order.provideritem.provider.providerName}</td>
+                <td class="active">省份</td>
+                <td>${requestScope.order.provideritem.provider.provinces}</td>
+            </tr>
+            <tr>
+                <td class="active">联系人</td>
+                <td>${requestScope.order.provideritem.provider.contant}</td>
+                <td class="active">联系方式</td>
+                <td>${requestScope.order.provideritem.provider.tele}</td>
+            </tr>
+            <tr>
+                <td class="active">详细地址</td>
+                <td colspan="3">${requestScope.order.provideritem.provider.address}</td>
             </tr>
         </table>
         <hr />

@@ -64,6 +64,7 @@ public class ProviderItemDaoImpl implements ProviderItemDao {
                 this.del(provideritem) ;
             }
             session.getTransaction().commit();
+            return true ;
         }catch (Exception e){
             session.getTransaction().rollback();
         }finally {
@@ -71,6 +72,17 @@ public class ProviderItemDaoImpl implements ProviderItemDao {
         }
 
         return false;
+    }
+
+    @Override
+    public Provideritem getByID(Integer providerItemID) {
+        Session session = HibernateUtil.getSession() ;
+
+        Provideritem provideritem = (Provideritem) session.get(Provideritem.class,providerItemID);
+
+        session.close() ;
+
+        return provideritem;
     }
 
     @Override
@@ -82,19 +94,22 @@ public class ProviderItemDaoImpl implements ProviderItemDao {
         int count =  1 ;
         double sum = provideritem.getPrice() ;
         for (Provideritem items : providers(item.getItemId())){
-            sum += items.getPrice() ;
-            count++ ;
+            if (items.getStatus().equals("有效")){
+                sum += items.getPrice() ;
+                count++ ;
+            }
         }
         double avgPrice = sum / count ;
         item.setAvePrice(avgPrice);
 
         try {
             session.beginTransaction() ;
-            if (session.get(Item.class,item.getItemId()) == null){
-                session.update(item);
-            }else{
-                session.save(item) ;
-            }
+            session.update(item);
+//            if (session.get(Item.class,item.getItemId()) == null){
+//                session.update(item);
+//            }else{
+//                session.save(item) ;
+//            }
             session.save(provideritem) ;
             session.getTransaction().commit();
             return true ;
@@ -114,17 +129,30 @@ public class ProviderItemDaoImpl implements ProviderItemDao {
 
         int count = 0 ;
         double sum = 0 ;
+
         for (Provideritem items : providers(item.getItemId())){
-            sum += items.getPrice() ;
-            count++ ;
+            if (items.getStatus().equals("有效")){
+                if (items.getProviderItemId().equals(provideritem.getProviderItemId())){
+                    sum += provideritem.getPrice() ;
+                }else{
+                    sum += items.getPrice() ;
+                }
+                count++ ;
+            }
         }
-        double avgPrice = sum / count ;
-        item.setAvePrice(avgPrice);
+
+        double avgPrice = 0 ;
+        if (count != 0) {
+            avgPrice = sum / count ;
+        }
+
 
         try {
             session.beginTransaction() ;
-            session.update(item);
             session.update(provideritem);
+
+            item.setAvePrice(avgPrice);
+            session.update(item);
             session.getTransaction().commit();
             return true ;
         }catch (Exception e){
@@ -138,26 +166,34 @@ public class ProviderItemDaoImpl implements ProviderItemDao {
     @Override
     public boolean del(Provideritem provideritem) {
         Session session = HibernateUtil.getSession() ;
+        provideritem.setStatus("无效");
 
         Item item = provideritem.getItem() ;
 
         int count = -1 ;
         double sum = -1 * provideritem.getPrice() ;
         for (Provideritem items : providers(item.getItemId())){
-            sum += items.getPrice() ;
-            count++ ;
+            if (items.getStatus().equals("有效")){
+                sum += items.getPrice() ;
+                count++ ;
+            }
+        }
+        if (count !=0){
+            double avgPrice = sum / count ;
+            item.setAvePrice(avgPrice);
+        }else{
+            item.setAvePrice(0);
         }
 
-        double avgPrice = sum / count ;
-        item.setAvePrice(avgPrice);
 
         try {
-            session.beginTransaction() ;
+            Transaction tx = session.beginTransaction() ;
+            session.update(provideritem);
             session.update(item);
-            session.delete(provideritem);
-            session.getTransaction().commit();
+            tx.commit();
             return true ;
         }catch (Exception e){
+            System.out.println(e);
             session.getTransaction().rollback();
         }finally {
             session.close() ;

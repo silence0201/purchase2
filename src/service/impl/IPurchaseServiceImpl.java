@@ -1,12 +1,16 @@
 package service.impl;
 
+import dao.ItemDao;
 import dao.OrderDao;
 import dao.PlanDao;
 import dao.ProviderDao;
+import dao.ProviderItemDao;
 import dao.RequestDao;
+import dao.impl.ItemDaoImpl;
 import dao.impl.OrderDaoImpl;
 import dao.impl.PlanDaoImpl;
 import dao.impl.ProviderDaoImpl;
+import dao.impl.ProviderItemDaoImpl;
 import dao.impl.RequestDaoImpl;
 import dao.impl.UserDaoImpl;
 import entity.Item;
@@ -30,42 +34,12 @@ import java.util.Map;
  * Update: silence(2016-05-14 09:28)
  */
 public class IPurchaseServiceImpl implements IPurchaseService {
-    RequestDao requestDao ;
-    PlanDao planDao ;
-    OrderDao orderDao ;
-    ProviderDao providerDao ;
-
-    public ProviderDao getProviderDao() {
-        return providerDao;
-    }
-
-    public void setProviderDao(ProviderDao providerDao) {
-        this.providerDao = providerDao;
-    }
-
-    public OrderDao getOrderDao() {
-        return orderDao;
-    }
-
-    public void setOrderDao(OrderDao orderDao) {
-        this.orderDao = orderDao;
-    }
-
-    public PlanDao getPlanDao() {
-        return planDao;
-    }
-
-    public void setPlanDao(PlanDao planDao) {
-        this.planDao = planDao;
-    }
-
-    public RequestDao getRequestDao() {
-        return requestDao;
-    }
-
-    public void setRequestDao(RequestDao requestDao) {
-        this.requestDao = requestDao;
-    }
+    private RequestDao requestDao ;
+    private PlanDao planDao ;
+    private OrderDao orderDao ;
+    private ProviderDao providerDao ;
+    private ProviderItemDao providerItemDao ;
+    private ItemDao itemDao ;
 
     @Override
     public  boolean creatrPlan() {
@@ -126,47 +100,149 @@ public class IPurchaseServiceImpl implements IPurchaseService {
     }
 
     @Override
-    public Order makeOrder(String planID,String userID) {
+    public Order makeOrder(String planID,String userID,String provideritemID) {
+        providerItemDao = new ProviderItemDaoImpl() ;
         Plan plan = getPlanByID(planID) ;
         Order order = new Order() ;
+        Provideritem provideritem = providerItemDao.getByID(new Integer(provideritemID)) ;
         order.setOrderMan(new UserDaoImpl().getByID(userID));
         order.setOrderStatus("采购中");
         order.setOrderTime(new Date(DateUtil.currentDate()));
         order.setPlan(plan);
+        order.setProvideritem(provideritem);
+        order.setTotalCost(provideritem.getPrice() * plan.getNumber());
         orderDao.add(order) ;
 
         return order;
     }
 
     @Override
-    public boolean addProvider(Provider provider) {
-        return false;
+    public ArrayList<Provideritem> getItemProviders(String itemID) {
+        providerItemDao = new ProviderItemDaoImpl() ;
+
+        ArrayList<Provideritem> provideritems = providerItemDao.providers(new Integer(itemID)) ;
+
+        return provideritems;
     }
 
     @Override
-    public boolean modifyProvider(Provider provider) {
-        return false;
+    public boolean addProvider(String providerName,String provinces,String contant,String tele,String address) {
+
+        providerDao = new ProviderDaoImpl() ;
+
+        Provider provider = new Provider() ;
+        provider.setProviderName(providerName);
+        provider.setProvinces(provinces);
+        provider.setContant(contant);
+        provider.setTele(tele);
+        provider.setAddress(address);
+        provider.setStatus("有效");
+
+        boolean flag = providerDao.add(provider) ;
+
+        return flag ;
     }
 
     @Override
-    public boolean delProvider(Provider provider) {
-        return false;
+    public boolean modifyProvider(String providerID,String providerName,String provinces,String contant,String tele,String address) {
+        providerDao = new ProviderDaoImpl() ;
+
+        Provider provider =  new Provider() ;
+        provider.setProviderId(new Integer(providerID));
+        provider.setAddress(address);
+        provider.setTele(tele);
+        provider.setProviderName(providerName);
+        provider.setProvinces(provinces) ;
+        provider.setContant(contant);
+        provider.setStatus("有效");
+
+        boolean flag = providerDao.modify(provider) ;
+
+        return flag;
     }
 
     @Override
-    public boolean modifyProviderItem(Provideritem provideritem) {
-        return false;
+    public boolean delProvider(String providerID) {
+        providerDao = new ProviderDaoImpl() ;
+        Provider provider = providerDao.getByID(new Integer(providerID)) ;
+
+        boolean flag = providerDao.del(provider) ;
+
+        return flag;
     }
 
     @Override
-    public boolean delProviderItem(Provideritem provideritem) {
-        return false;
+    public boolean modifyProviderItem(String providerItemID, String price, String quality) {
+        providerItemDao = new ProviderItemDaoImpl() ;
+
+        Provideritem provideritem = providerItemDao.getByID(new Integer(providerItemID)) ;
+        provideritem.setPrice(new Double(price));
+        provideritem.setQuality(quality);
+
+        boolean flag =  providerItemDao.modify(provideritem)  ;
+
+        return flag;
     }
 
     @Override
-    public boolean addProviderItem(Provideritem provideritem) {
-        return false;
+    public boolean delProviderItem(String providerItemID) {
+        providerItemDao = new ProviderItemDaoImpl() ;
+
+        Provideritem provider = providerItemDao.getByID(new Integer(providerItemID)) ;
+
+        boolean flag =  providerItemDao.del(provider) ;
+
+        return flag;
     }
+
+    @Override
+    public boolean addProviderItem(String providerID, String itemName, String price, String quality) {
+        itemDao = new ItemDaoImpl() ;
+        providerItemDao = new ProviderItemDaoImpl() ;
+        providerDao = new ProviderDaoImpl() ;
+
+        Provideritem provideritem = new Provideritem() ;
+
+        Item item = itemDao.add(itemName) ;
+        Provider provider = providerDao.getByID(new Integer(providerID)) ;
+
+        provideritem.setPrice(new Double(price));
+        provideritem.setQuality(quality);
+        provideritem.setItem(item);
+        provideritem.setProvider(provider);
+        provideritem.setStatus("有效");
+
+        boolean flag = providerItemDao.add(provideritem) ;
+
+        return flag;
+    }
+
+    @Override
+    public ArrayList<Provideritem> getProvideritemByProviderID(String providerID) {
+        providerItemDao = new ProviderItemDaoImpl() ;
+
+        ArrayList<Provideritem> provideritems = providerItemDao.items(new Integer(providerID)) ;
+
+        return provideritems;
+    }
+
+    @Override
+    public Provider getProviderByID(String providerID) {
+        providerDao = new ProviderDaoImpl() ;
+
+        Provider provider = providerDao.getByID(new Integer(providerID)) ;
+
+        return provider;
+    }
+
+    @Override
+    public Provideritem getProviderItemByID(String provideItemID) {
+        providerItemDao = new ProviderItemDaoImpl() ;
+        Provideritem provideritem  = providerItemDao.getByID(new Integer(provideItemID)) ;
+
+        return provideritem;
+    }
+
 
     @Override
     public ArrayList<String> getCheckNotices() {
@@ -223,6 +299,7 @@ public class IPurchaseServiceImpl implements IPurchaseService {
         return null;
     }
 
+
     @Override
     public Request getRequestByID(String requestID) {
         requestDao = new RequestDaoImpl() ;
@@ -239,4 +316,6 @@ public class IPurchaseServiceImpl implements IPurchaseService {
 
         return plan;
     }
+
+
 }

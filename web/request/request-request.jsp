@@ -10,7 +10,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
-    <title>申请员->采购申请</title>
+    <title>申请员->需求申请</title>
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/request.css">
@@ -53,7 +53,9 @@
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <select id="item" name="item" style="width:160px;">
                     <c:forEach items="${ requestScope.items }" var="item">
-                        <option value="${ item.getItemId() }">${ item.getItemName() }</option>
+                        <c:if test="${item.avePrice > 0}">
+                            <option value="${ item.getItemId() }">${ item.getItemName() }</option>
+                        </c:if>
                     </c:forEach>
                 </select>
 
@@ -98,10 +100,6 @@
             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <label style="font-size: 1.3em">月累计申请金额:&nbsp;&nbsp;</label>
             <input type="text" readonly="readonly" value="${requestScope.countOfMoney}">
-            <br /><br />
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <label style="font-size: 1.3em">本月剩余金额:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="text" readonly="readonly" value="${10000 - requestScope.countOfMoney}">
             <br />
         </div>
     </section>

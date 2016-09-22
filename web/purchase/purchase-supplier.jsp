@@ -54,19 +54,24 @@
                 </tr>
 
                 <c:forEach items="${ requestScope.suppliers }" var="provider" varStatus="status">
-                    <c:if test="${ status.index < 15}">
+                    <c:if test="${ status.index < 15 && provider.status.equals('有效')}">
                         <tr>
                             <td>${ provider.getProviderId() }</td>
                             <td>${ provider.getProviderName() }</td>
                             <td>${ provider.getContant()}</td>
                             <td>${ provider.getTele() }</td>
                             <td>${ provider.getProvinces().concat(provider.getAddress()) }</td>
-                            <td><a href="">详情</a>&nbsp;<a href="">修改</a>
-                                &nbsp;<a href="">删除</a></td>
+                            <td><a href="purchaseProviderInfo.action?providerID=${ provider.getProviderId() }">详情</a>&nbsp;
+                                <a href="purchaseInitProviderModify.action?providerID=${ provider.getProviderId()}">修改</a>&nbsp;
+                                <a href="purchaseProviderDel.action?providerID=${ provider.getProviderId()}">删除</a></td>
                         </tr>
                     </c:if>
                 </c:forEach>
             </table>
+            <hr />
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+            <button name="addProvider" ><a href="purchaseInitProviderAdd.action">添加供应商</a></button>
         </div>
         <div id="side_div1">
             <header id="time">

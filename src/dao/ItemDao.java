@@ -12,4 +12,5 @@ import java.util.ArrayList;
 public interface ItemDao {
     public abstract ArrayList<Item> itemInfo() ;   //获取物品的详细信息列表
     public abstract Item item(Integer itemID) ; //获取指定商品的信息
+    public abstract Item add(String itemName) ; //根据名字进行新建
 }

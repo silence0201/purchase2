@@ -56,14 +56,14 @@
                     <c:forEach items="${ requestScope.orderList }" var="arder" varStatus="status">
                         <c:if test="${ status.index < 15}">
                             <tr>
-                                <td>${ arder.getOrderId() }</td>
-                                <td>${ arder.getPlan().getPlanId() }</td>
-                                <td>${ arder.getPlan().getItem().getItemName()}</td>
-                                <td>${ arder.getPlan().getItem().getAvePrice()}</td>
-                                <td>${ arder.getPlan().getTotalCost() }</td>
-                                <td>${ arder.getOrderTime()}</td>
-                                <td>${ arder.getOrderStatus() }</td>
-                                <td><a href="purchaseMoreOrder.action?orderID=${ arder.getOrderId() }">详情</a></td>
+                                <td>${ arder.orderId }</td>
+                                <td>${ arder.plan.planId }</td>
+                                <td>${ arder.plan.item.itemName}</td>
+                                <td>${ arder.plan.number}</td>
+                                <td>${ arder.totalCost }</td>
+                                <td>${ arder.orderTime}</td>
+                                <td>${ arder.orderStatus }</td>
+                                <td><a href="purchaseMoreOrder.action?orderID=${ arder.orderId }">详情</a></td>
                             </tr>
                         </c:if>
                     </c:forEach>

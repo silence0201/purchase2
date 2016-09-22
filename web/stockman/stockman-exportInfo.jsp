@@ -23,7 +23,7 @@
     </div>
     <div class="web_palce">
         <article class="place">
-            <a   class="user_status" href="#">库管员</a>
+            <a   class="user_status" href="stockStatus.action">库管员</a>
             <div class="place_driver"></div>
             <a  class="current" href="#">出库记录</a>
         </article>

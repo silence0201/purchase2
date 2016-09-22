@@ -39,4 +39,38 @@ public class ItemDaoImpl implements ItemDao {
 
         return item;
     }
+
+    @Override
+    public Item add(String itemName) {
+        Session session = HibernateUtil.getSession() ;
+
+        Transaction tx = session.beginTransaction() ;
+
+        String hql  = "select item from Item item" +
+                " where item.itemName=:itemName" ;
+        Query query =  session.createQuery(hql) ;
+        query.setParameter("itemName",itemName) ;
+
+        ArrayList<Item> items = (ArrayList<Item>)query.list() ;
+
+        session.close() ;
+
+        if (items !=null && items.size() != 0){
+            return items.get(0) ;
+        }
+
+        Item item = new Item() ;
+        item.setAvePrice(0);
+        item.setItemName(itemName);
+        item.setAvePrice(0);
+        item.setInventory(0);
+
+        session = HibernateUtil.getSession() ;
+        session.beginTransaction() ;
+        session.save(item) ;
+        session.getTransaction().commit();
+        session.close() ;
+
+        return item;
+    }
 }

@@ -160,6 +160,64 @@
             <result name="input">purchaseCheck.action</result>
         </action>
 
+        <!--供应商管理-->
+        <action name="purchaseProviderInfo" class="action.PurchaseAction" method="providerInfo">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="input">/purchase/purchase-supplier.jsp</result>
+            <result name="success">/purchase/purchase-supplierInfo.jsp</result>
+        </action>
+        <action name="purchaseInitProviderModify" class="action.PurchaseAction" method="initProviderModify">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-supplierInfo-modify.jsp</result>
+            <result name="input" type="redirect">purchaseSupplier.action</result>
+        </action>
+        <action name="purchaseProvideModify" class="action.PurchaseAction" method="providerModify">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+        <action name="purchaseProviderDel" class="action.PurchaseAction" method="providerDel">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+        <action name="purchaseInitProviderAdd" class="action.PurchaseAction" method="initProviderAdd">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-supplierAdd.jsp</result>
+        </action>
+        <action name="purchaseProviderAdd" class="action.PurchaseAction" method="providerAdd">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
+        <!--商品管理-->
+        <action name="purchaseProviderItemDel" class="action.PurchaseAction" method="providerItemDel">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+        <action name="purchaseInitProviderItemModify" class="action.PurchaseAction" method="initProvideItemModify">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-supplierItem-modify.jsp</result>
+            <result name="input">purchaseSupplier.action</result>
+        </action>
+        <action name="purchaseProviderItemModify" class="action.PurchaseAction" method="providerItemModify">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+        <action name="purchaseInitProviderItemAdd" class="action.PurchaseAction" method="initProviderItemAdd">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/purchase/purchase-supplierItem-add.jsp</result>
+            <result name="input">purchaseSupplier.action</result>
+        </action>
+        <action name="purchaseProviderItemAdd" class="action.PurchaseAction" method="providerItemAdd">
+            <interceptor-ref name="purchaseLogin"/>
+            <result name="success">/common/success.jsp</result>
+            <result name="error">/common/error.jsp</result>
+        </action>
+
     </package>
 
     <!--库管员action-->
@@ -196,11 +254,15 @@
             <interceptor-ref name="stockLogin"/>
             <result>/stockman/stockman-importList.jsp</result>
         </action>
+        <action name="stockICheckIn" class="action.StockAction" method="checkIn">
+            <interceptor-ref name="stockLogin"/>
+            <result>/stockman/stockman-checkin.jsp</result>
+        </action>
 
         <!--出库确认-->
         <action name="initExport" class="action.StockAction" method="initExport">
             <interceptor-ref name="stockLogin"/>
-            <result>/stockman/stockman-export.jsp</result>
+            <result>/stockman/stockman-checkin.jsp</result>
         </action>
         <action name="addExport" class="action.StockAction" method="addExport">
             <interceptor-ref name="stockLogin"/>
@@ -218,7 +280,7 @@
         <!--入库确认-->
         <action name="initImport" class="action.StockAction" method="initImport">
             <interceptor-ref name="stockLogin"/>
-            <result>/stockman/stockman-import.jsp</result>
+            <result>/stockman/stockman-checkin.jsp</result>
         </action>
 
         <action name="addImport" class="action.StockAction" method="addImport">

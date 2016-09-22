@@ -14,4 +14,5 @@ public interface ProviderDao {
     public abstract boolean add(Provider provider) ; //添加供应商信息
     public abstract boolean del(Provider provider) ; //删除供应商信息
     public abstract boolean modify(Provider provider) ; //修改供应商信息
+    public abstract Provider getByID(Integer providerID) ;  //通过ID获取对象
 }

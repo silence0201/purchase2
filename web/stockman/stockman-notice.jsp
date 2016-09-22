@@ -25,9 +25,9 @@
         </div>
         <div class="web_palce">
             <article class="place">
-                <a   class="user_status" href="#">库管员</a>
+                <a   class="user_status" href="stockStatus.action">库管员</a>
                 <div class="place_driver"></div>
-                <a  class="current" href="#">库存状态</a>
+                <a  class="current" href="stockStatus.action">库存状态</a>
             </article>
         </div>
     </section>

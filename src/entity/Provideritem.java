@@ -26,6 +26,7 @@ public class Provideritem {
     private double price;  //商品的价格
     private Provider provider ;   //商品的供应商
     private Item item ;   //供应的价格
+    private String status ;   //供应商的状态
 
     @Id
     @Column(name = "providerItemID")
@@ -78,21 +79,32 @@ public class Provideritem {
         this.provider = provider;
     }
 
+    @Basic
+    @Column(name = "status")
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Provideritem)) return false;
         Provideritem that = (Provideritem) o;
-        return getProviderItemId() == that.getProviderItemId() &&
-                Double.compare(that.getPrice(), getPrice()) == 0 &&
+        return Double.compare(that.getPrice(), getPrice()) == 0 &&
+                Objects.equals(getProviderItemId(), that.getProviderItemId()) &&
                 Objects.equals(getQuality(), that.getQuality()) &&
                 Objects.equals(getProvider(), that.getProvider()) &&
-                Objects.equals(getItem(), that.getItem());
+                Objects.equals(getItem(), that.getItem()) &&
+                Objects.equals(getStatus(), that.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProviderItemId(), getQuality(), getPrice(), getProvider(), getItem());
+        return Objects.hash(getProviderItemId(), getQuality(), getPrice(), getProvider(), getItem(), getStatus());
     }
 
     @Override
@@ -103,6 +115,7 @@ public class Provideritem {
                 ", quality='" + quality + '\'' +
                 ", price=" + price +
                 ", provider=" + provider +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

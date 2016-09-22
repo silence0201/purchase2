@@ -27,6 +27,8 @@ public class Order {
     private String orderStatus;  //订单状态
     private Plan plan ;   //订单对应计划单
     private User orderMan ;  //采购人
+    private Provideritem provideritem ; //采购商品的信息
+    private double totalCost;   //商品金额
 
     @Id
     @Column(name = "orderID")
@@ -79,21 +81,44 @@ public class Order {
         this.plan = plan;
     }
 
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "providerItemID")
+    public Provideritem getProvideritem() {
+        return provideritem;
+    }
+
+    public void setProvideritem(Provideritem provideritem) {
+        this.provideritem = provideritem;
+    }
+
+    @Basic
+    @Column(name = "totalCost")
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return Objects.equals(getOrderId(), order.getOrderId()) &&
+        return Double.compare(order.getTotalCost(), getTotalCost()) == 0 &&
+                Objects.equals(getOrderId(), order.getOrderId()) &&
                 Objects.equals(getOrderTime(), order.getOrderTime()) &&
                 Objects.equals(getOrderStatus(), order.getOrderStatus()) &&
                 Objects.equals(getPlan(), order.getPlan()) &&
-                Objects.equals(getOrderMan(), order.getOrderMan());
+                Objects.equals(getOrderMan(), order.getOrderMan()) &&
+                Objects.equals(getProvideritem(), order.getProvideritem());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOrderId(), getOrderTime(), getOrderStatus(), getPlan(), getOrderMan());
+        return Objects.hash(getOrderId(), getOrderTime(), getOrderStatus(), getPlan(), getOrderMan(), getProvideritem(), getTotalCost());
     }
 
     @Override
@@ -104,6 +129,8 @@ public class Order {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", plan=" + plan +
                 ", orderMan=" + orderMan +
+                ", provideritem=" + provideritem +
+                ", totalCost=" + totalCost +
                 '}';
     }
 }

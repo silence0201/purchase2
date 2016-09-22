@@ -6,6 +6,7 @@ import entity.Item;
 import entity.Order;
 import entity.Plan;
 import entity.Provider;
+import entity.Provideritem;
 import entity.Request;
 import entity.User;
 import service.IPurchaseService;
@@ -76,9 +77,15 @@ public class PurchaseAction  extends ActionSupport {
         String planID = ((String[]) pragram.get("planID"))[0];
         Plan plan = service.getPlanByID(planID) ;
 
+        String itemID = plan.getItem().getItemId().toString();
+        ArrayList<Provideritem> provideritems = service.getItemProviders(itemID) ;
+
+        ActionContext.getContext().put("provideritems",provideritems);
+
         ActionContext.getContext().put("checkList",checkList);
         ActionContext.getContext().put("orderList",orderList);
         ActionContext.getContext().put("plan",plan);
+
         return SUCCESS ;
     }
 
@@ -91,7 +98,8 @@ public class PurchaseAction  extends ActionSupport {
         ArrayList<Order> orderList = service.getOrderList(user.getUserId()) ;
         Map pragram = ActionContext.getContext().getParameters() ;
         String planID = ((String[]) pragram.get("planID"))[0];
-        Order order = service.makeOrder(planID,user.getUserId()) ;
+        String provideritemID = ((String[]) pragram.get("provideritemID"))[0];
+        Order order = service.makeOrder(planID,user.getUserId(),provideritemID) ;
 
         ActionContext.getContext().put("checkList",checkList);
         ActionContext.getContext().put("orderList",orderList);
@@ -100,56 +108,278 @@ public class PurchaseAction  extends ActionSupport {
         return SUCCESS ;
     }
 
-    //初始化添加供应商
-    public String initAddProvider(){
+    //初始化供应商详细信息
+    public String providerInfo(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerID = ((String[]) pragram.get("providerID"))[0];
+        Provider provider = null;
+        ArrayList<Provideritem> provideritems = service.getProvideritemByProviderID(providerID)  ;
+
+        if (provideritems == null){
+            return INPUT ;
+        }
+        provider = service.getProviderByID(providerID);
+        int countA = 0 ;
+        int countB = 0 ;
+        int countC = 0 ;
+        for (Provideritem provideritem : provideritems ){
+            if ("A".equals(provideritem.getQuality())){
+                countA++ ;
+            }
+            if ("B".equals(provideritem.getQuality())){
+                countB++ ;
+            }
+            if ("C".equals(provideritem.getQuality())){
+                countC++ ;
+            }
+        }
+
+        ActionContext.getContext().put("countA",countA);
+        ActionContext.getContext().put("countB",countB);
+        ActionContext.getContext().put("countC",countC);
+
+        ActionContext.getContext().put("provider",provider);
+        ActionContext.getContext().put("providerItems",provideritems);
+
         return SUCCESS ;
     }
 
-    //添加供应商
-    public String addProvider(){
-        return SUCCESS  ;
+    //初始化供应商修改页面
+    public String initProviderModify(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerID = ((String[]) pragram.get("providerID"))[0];
+        Provider provider = null;
+        ArrayList<Provideritem> provideritems = service.getProvideritemByProviderID(providerID)  ;
+
+        if (provideritems == null){
+            return INPUT ;
+        }
+        provider = service.getProviderByID(providerID);
+        int countA = 0 ;
+        int countB = 0 ;
+        int countC = 0 ;
+        for (Provideritem provideritem : provideritems ){
+            if ("A".equals(provideritem.getQuality())){
+                countA++ ;
+            }
+            if ("C".equals(provideritem.getQuality())){
+                countC++ ;
+            }
+            if ("B".equals(provideritem.getQuality())){
+                countB++ ;
+            }
+
+        }
+        ActionContext.getContext().put("countA",countA);
+        ActionContext.getContext().put("countB",countB);
+        ActionContext.getContext().put("countC",countC);
+
+        ActionContext.getContext().put("provider",provider);
+
+        return SUCCESS ;
     }
 
+    //修改供应商信息
+    public String providerModify(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerID = ((String[]) pragram.get("providerID"))[0];
+        String providerName = ((String[]) pragram.get("providerName"))[0];
+        String provinces = ((String[]) pragram.get("provinces"))[0];
+        String contant = ((String[]) pragram.get("contant"))[0];
+        String tele = ((String[]) pragram.get("tele"))[0];
+        String address = ((String[]) pragram.get("address"))[0];
+        boolean flag = service.modifyProvider(providerID,providerName,provinces,contant,tele,address) ;
+        if (flag){
+            return SUCCESS ;
+        }
+        return ERROR ;
+    }
 
     //删除供应商
-    public String delProvider(){
+    public String providerDel(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerID = ((String[]) pragram.get("providerID"))[0];
+
+        boolean flag = service.delProvider(providerID) ;
+
+        if (flag){
+            return SUCCESS ;
+        }
+        return ERROR ;
+    }
+
+    //初始化增加供应商
+    public String initProviderAdd(){
+
+        service = new IPurchaseServiceImpl() ;
+
+        ArrayList<Provider> suppliers = service.getProviders() ;
+
+        Map<String,Integer> classal = new HashMap<>() ;
+
+        for (Provider pro : suppliers){
+            Integer count = classal.get(pro.getProvinces()) ;
+            if (count == null){
+                count = new Integer(1) ;
+                classal.put(pro.getProvinces(),count) ;
+            }else {
+                count++ ;
+                classal.put(pro.getProvinces(),count) ;
+            }
+        }
+
+        ActionContext.getContext().put("classal",classal);
+
+
         return SUCCESS ;
     }
 
-    //初始化修改供应商页面
-    public String initModifyProvider(){
+    //增加供应商
+    public String providerAdd(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerName = ((String[]) pragram.get("providerName"))[0];
+        String provinces = ((String[]) pragram.get("provinces"))[0];
+        String contant = ((String[]) pragram.get("contant"))[0];
+        String tele = ((String[]) pragram.get("tele"))[0];
+        String address = ((String[]) pragram.get("address"))[0];
+
+        boolean flag =service.addProvider(providerName,provinces,contant,tele,address) ;
+        if (flag){
+            return SUCCESS ;
+        }
+        return ERROR ;
+    }
+
+    //删除指定供应商的编号
+    public String providerItemDel(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerItemID = ((String[]) pragram.get("providerItemID"))[0];
+
+        boolean flag = service.delProviderItem(providerItemID) ;
+        if (flag){
+            return SUCCESS ;
+        }
+        return ERROR ;
+    }
+
+    //修改指定供应商供应商品的信息
+    public String initProvideItemModify(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerItemID = ((String[]) pragram.get("providerItemID"))[0];
+
+        Provideritem provideritem = service.getProviderItemByID(providerItemID) ;
+        ArrayList<Provideritem> provideritems = service.getProvideritemByProviderID(provideritem.getProvider().getProviderId().toString());  ;
+
+        if (provideritems == null){
+            return INPUT ;
+        }
+        int countA = 0 ;
+        int countB = 0 ;
+        int countC = 0 ;
+        for (Provideritem p : provideritems ){
+            if ("C".equals(p.getQuality())){
+                countC++ ;
+            }
+            if ("B".equals(p.getQuality())){
+                countB++ ;
+            }
+            if ("A".equals(p.getQuality())){
+                countA++ ;
+            }
+        }
+        ActionContext.getContext().put("countA",countA);
+        ActionContext.getContext().put("countB",countB);
+        ActionContext.getContext().put("countC",countC);
+        ActionContext.getContext().put("provideritem",provideritem);
+
         return SUCCESS ;
     }
 
-    //修改供应商
-    public String modifyProvider(){
+    //修改指定供应商供应商品的信息
+    public String providerItemModify(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerItemID = ((String[]) pragram.get("providerItemID"))[0];
+        String price = ((String[]) pragram.get("price"))[0];
+        String quality = ((String[]) pragram.get("quality"))[0];
+
+        boolean flag = service.modifyProviderItem(providerItemID,price,quality) ;
+
+        if (flag){
+            return SUCCESS ;
+        }
+
+        return ERROR ;
+    }
+
+    //初始化修改增加供应商信息页面
+    public String initProviderItemAdd(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerID = ((String[]) pragram.get("providerID"))[0];
+        ArrayList<Provideritem> provideritems = service.getProvideritemByProviderID(providerID);  ;
+
+        if (provideritems == null || provideritems.size() == 0){
+            return INPUT ;
+        }
+        int countA = 0 ;
+        int countB = 0 ;
+        int countC = 0 ;
+        for (Provideritem p : provideritems ){
+            if ("C".equals(p.getQuality())){
+                countC++ ;
+            }
+            if ("A".equals(p.getQuality())){
+                countA++ ;
+            }
+            if ("B".equals(p.getQuality())){
+                countB++ ;
+            }
+        }
+        Provider provider = provideritems.get(0).getProvider() ;
+        ActionContext.getContext().put("countA",countA);
+        ActionContext.getContext().put("countB",countB);
+        ActionContext.getContext().put("countC",countC);
+        ActionContext.getContext().put("provider",provider);
+
+
         return SUCCESS ;
     }
 
-    //初始化增加商品
-    public String initAddProviderItem(){
-        return SUCCESS ;
+    //添加供应商商品信息
+    public String providerItemAdd(){
+        service = new IPurchaseServiceImpl() ;
+
+        Map pragram = ActionContext.getContext().getParameters() ;
+        String providerID = ((String[]) pragram.get("providerID"))[0];
+        String itemName = ((String[]) pragram.get("itemName"))[0];
+        String price = ((String[]) pragram.get("price"))[0];
+        String quality = ((String[]) pragram.get("quality"))[0];
+
+        boolean flag = service.addProviderItem(providerID,itemName,price,quality) ;
+
+        if (flag){
+            return SUCCESS ;
+        }
+        return ERROR ;
     }
 
-    //增加商品
-    public String addPrviderItem(){
-        return SUCCESS ;
-    }
-
-    //删除商品
-    public String delProviderItem(){
-        return SUCCESS ;
-    }
-
-    //初始化修改商品信息
-    public String initModifyProviderItem(){
-        return SUCCESS ;
-    }
-
-    //修改商品信息
-    public String modifyProviderItem(){
-        return SUCCESS ;
-    }
 
     //跳转到通知页面
     public String notice(){
@@ -157,9 +387,10 @@ public class PurchaseAction  extends ActionSupport {
         User user = (User) ActionContext.getContext().getSession().get("user") ;
 
         ArrayList<String> checkNotice = service.getCheckNotices() ;
-        int count = checkNotice.size() ;
+
         boolean flag =  service.creatrPlan() ;
         ArrayList<String> needPlans = service.getPurchaseNotices() ;
+        int count = checkNotice.size() + needPlans.size() ;
         ArrayList<Request> checkList = service.getCheckList(user.getUserId()) ;
         ArrayList<Order> orderList = service.getOrderList(user.getUserId()) ;
 
@@ -211,7 +442,7 @@ public class PurchaseAction  extends ActionSupport {
         for (Order order : orderList){
             if (order.getOrderTime().after(start)){
                 countOfTime++ ;
-                sumOfMoney += order.getPlan().getTotalCost() ;
+                sumOfMoney += order.getTotalCost() ;
             }
             count++ ;
         }
@@ -264,7 +495,7 @@ public class PurchaseAction  extends ActionSupport {
         for (Order o : orderList){
             if (o.getOrderTime().after(DateUtil.getStartOfMonth())){
                 countOfTime++ ;
-                sumOfMoney += o.getPlan().getTotalCost() ;
+                sumOfMoney += o.getTotalCost() ;
             }
             if (o.getOrderId().equals(new Integer(orderID))){
                 arder = o ;
@@ -311,4 +542,6 @@ public class PurchaseAction  extends ActionSupport {
         ActionContext.getContext().put("sumOfMoney",sumOfMoney);
         return SUCCESS ;
     }
+
+
 }

@@ -1,7 +1,9 @@
 package dao.impl;
 
 import dao.ProviderDao;
+import dao.ProviderItemDao;
 import entity.Provider;
+import entity.Provideritem;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -51,20 +53,17 @@ public class ProviderDaoImpl implements ProviderDao {
 
     @Override
     public boolean del(Provider provider) {
-        Session session = HibernateUtil.getSession() ;
+        ProviderItemDao providerItemDao = new ProviderItemDaoImpl() ;
+        provider.setStatus("无效");
 
-        try {
-            session.beginTransaction() ;
-            session.delete(provider);
-            boolean flag = new ProviderItemDaoImpl().delProvider(provider.getProviderId()) ;
-            session.getTransaction().commit();
-            return flag ;
-        }catch (Exception e){
-            session.getTransaction().rollback();
-        }finally {
-            session.close() ;
+        boolean flag = modify(provider) ;
+        ArrayList<Provideritem> items = providerItemDao.items(provider.getProviderId()) ;
+
+        for (Provideritem item : items){
+            flag = flag && providerItemDao.del(item) ;
         }
-        return false;
+
+        return flag;
     }
 
     @Override
@@ -81,5 +80,15 @@ public class ProviderDaoImpl implements ProviderDao {
             session.close() ;
         }
         return false;
+    }
+
+    @Override
+    public Provider getByID(Integer providerID) {
+        Session session = HibernateUtil.getSession() ;
+
+        Provider provider = (Provider) session.get(Provider.class,providerID);
+
+        session.close() ;
+        return provider;
     }
 }

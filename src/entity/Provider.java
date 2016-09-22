@@ -23,10 +23,11 @@ public class Provider {
     private String tele;  //供应商联系电话
     private String provinces;  //供应商所属的省份
     private String address;  //供应商所属的地址
+    private String status ; //供应商的状态
 
     @Id
     @Column(name = "providerID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getProviderId() {
         return providerId;
     }
@@ -85,22 +86,33 @@ public class Provider {
         this.address = address;
     }
 
+    @Basic
+    @Column(name = "status")
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Provider)) return false;
         Provider provider = (Provider) o;
-        return providerId == provider.providerId &&
-                Objects.equals(providerName, provider.providerName) &&
-                Objects.equals(contant, provider.contant) &&
-                Objects.equals(tele, provider.tele) &&
-                Objects.equals(provinces, provider.provinces) &&
-                Objects.equals(address, provider.address);
+        return Objects.equals(getProviderId(), provider.getProviderId()) &&
+                Objects.equals(getProviderName(), provider.getProviderName()) &&
+                Objects.equals(getContant(), provider.getContant()) &&
+                Objects.equals(getTele(), provider.getTele()) &&
+                Objects.equals(getProvinces(), provider.getProvinces()) &&
+                Objects.equals(getAddress(), provider.getAddress()) &&
+                Objects.equals(getStatus(), provider.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(providerId, providerName, contant, tele, provinces, address);
+        return Objects.hash(getProviderId(), getProviderName(), getContant(), getTele(), getProvinces(), getAddress(), getStatus());
     }
 
     @Override
@@ -112,6 +124,7 @@ public class Provider {
                 ", contant='" + contant + '\'' +
                 ", tele='" + tele + '\'' +
                 ", provinces='" + provinces + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

@@ -72,6 +72,21 @@ public class StockAction extends ActionSupport {
         return ERROR ;
     }
 
+    //跳转到登记页面
+    public String checkIn(){
+        service = new IStockServiceImpl() ;
+
+        User user = (User) ActionContext.getContext().getSession().get("user") ;
+        String userID = user.getUserId() ;
+
+        int countOfExport  = service.getCountOfExport(userID) ;
+        int countOfImport = service.getcountOfImport(userID) ;
+        ActionContext.getContext().put("countOfExport",countOfExport);
+        ActionContext.getContext().put("countOfImport",countOfImport);
+
+        return SUCCESS ;
+    }
+
     //初始化入库信息页面
     public String initImport(){
         service = new IStockServiceImpl() ;

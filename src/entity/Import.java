@@ -13,7 +13,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.sql.Date;
 import java.util.Objects;
-
 /**
  * Description: Import
  * Author: silence

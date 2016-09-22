@@ -103,11 +103,6 @@
             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <label style="font-size: 1.3em">月累计申请金额:&nbsp;&nbsp;</label>
             <input type="text" readonly="readonly" value="${requestScope.countOfMoney}">
-            <br /><br />
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <label style="font-size: 1.3em">本月剩余金额:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="text" readonly="readonly" value="${10000 - requestScope.countOfMoney}">
-            <br />
         </div>
     </section>
 </body>

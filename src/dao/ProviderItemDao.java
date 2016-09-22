@@ -1,6 +1,5 @@
 package dao;
 
-import entity.Item;
 import entity.Provideritem;
 
 import java.util.ArrayList;
@@ -17,4 +16,5 @@ public interface ProviderItemDao {
     public abstract boolean del(Provideritem provideritem) ; //删除供应商提供的商品信息
     public abstract ArrayList<Provideritem> providers(Integer itemID) ;   //获取供应商品的供应商
     public abstract boolean delProvider(Integer providerID) ;  //删除供应商的信息
+    public abstract Provideritem getByID(Integer providerItemID) ; //根绝ID获取对象
 }

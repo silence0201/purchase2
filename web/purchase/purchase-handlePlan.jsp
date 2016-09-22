@@ -62,31 +62,32 @@
                 </tr>
             </table>
             <hr />
-            <h4>&nbsp;&nbsp;申请单信息</h4>
+            <h4>&nbsp;&nbsp;商品供应商信息</h4>
             <table class="table table-striped table-hover table-bordered">
                 <tr>
-                    <td>申请人</td>
-                    <td>申请部门</td>
-                    <td>商品</td>
-                    <td>数量</td>
+                    <td>供应商编号</td>
+                    <td>供应商名称</td>
+                    <td>联系人</td>
+                    <td>联系电话</td>
+                    <td>商品单价</td>
+                    <td>质量</td>
+                    <td>&nbsp;</td>
                 </tr>
-                <c:forEach items="${requestScope.plan.requests}" var="r" varStatus="status">
-                    <c:if test="${status.index < 5}">
+
+                <c:forEach items="${requestScope.provideritems}" var="provideritem" varStatus="status">
+                    <c:if test="${provideritem.provider.status == '有效'}">
                         <tr>
-                            <td>${r.requestMan.userName}</td>
-                            <td>${r.requestMan.position.split("申请员")[0]}</td>
-                            <td>${r.item.itemName}</td>
-                            <td>${r.number}</td>
+                            <td>${provideritem.provider.providerId}</td>
+                            <td>${provideritem.provider.providerName}</td>
+                            <td>${provideritem.provider.contant}</td>
+                            <td>${provideritem.provider.tele}</td>
+                            <td>${provideritem.price}</td>
+                            <td>${provideritem.quality}</td>
+                            <td><a href="purchasePlanHandle.action?planID=${requestScope.plan.planId}&provideritemID=${provideritem.providerItemId}">采购</a></td>
                         </tr>
                     </c:if>
                 </c:forEach>
             </table>
-
-            <form action="purchasePlanHandle.action">
-                <input type="text" name="planID" value="${requestScope.plan.planId}" hidden="hidden">
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <input type="submit" value="采购">
-            </form>
         </div>
         <div id="side_div1">
             <header id="time">

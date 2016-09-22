@@ -13,9 +13,10 @@
     </div>
     <div class="function">
         <div id="status"><a href="stockStatus.action">库存状态</a></div>
-        <div id="import"><a href="stockImport.action">入库登记</a></div>
+        <div id="import"><a href="stockICheckIn.action">库存登记</a></div>
+        <%--<div id="import"><a href="stockImport.action">入库登记</a></div>--%>
         <div id="importList"><a href="stockImportList.action">入库列表</a></div>
-        <div id="export"><a href="stockExport.action">出库登记</a></div>
+        <%--<div id="export"><a href="stockExport.action">出库登记</a></div>--%>
         <div id="exportList"><a href="stockExportList.action">出库列表</a></div>
         <div id="exit"><a href="stockmanLogout.action">退出登录</a></div>
     </div>
